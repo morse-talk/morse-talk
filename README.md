@@ -1,5 +1,5 @@
 # morse-talk
-morse-talk is a morse aide written in python.
+morse-talk is a Python library which deals with [Morse code](http://en.wikipedia.org/wiki/Morse_code)
 
 ## Usage
 ```python
