@@ -117,6 +117,7 @@ def encode(message, encoding='default'):
                 converted.append('0')
         return ''.join(converted).rstrip('000')
 
+
 def decode(code, encoding='default'):
     """Converts a string of morse code into English message
 
@@ -124,7 +125,8 @@ def decode(code, encoding='default'):
     backwards.
 
     """
-    reversed_morsetab = {symbol : character for character, symbol in morsetab.items()}
+    reversed_morsetab = {symbol: character for character,
+                         symbol in morsetab.items()}
 
     if encoding == 'default':
         message = [reversed_morsetab[i] for i in code.split()]
@@ -140,12 +142,12 @@ def decode(code, encoding='default'):
                             words += 1
                             letters += 1
                             index[words] = letters
-                    elif code[i+4] and code[i-1] != ' ':
+                    elif code[i+4] and code[i-1] != ' ':  # Check for '   '
                         letters += 1
 
         count = 0
         for word, letter in index.items():
-            message.insert(letter + count , ' ')
+            message.insert(letter + count, ' ')
             count += 1
         return ''.join(message)
 
