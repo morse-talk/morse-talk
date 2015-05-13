@@ -7,7 +7,7 @@ Functions to encode and decode strings
 #    All rights reserved.
 #    GNU license.
 
-__all__ = ['encode']
+__all__ = ['encode', 'decode']
 
 morsetab = {
         'A': '.-',              'a': '.-',
@@ -78,6 +78,8 @@ def encode(message, encoding='default'):
     encoded_message : String
 
     """
+    message = message.strip()  # No trailing or leading spaces
+
     if encoding == 'default':
         char = list(message)  # char is a list of all the characters in message
         encoded_message = []
@@ -114,3 +116,39 @@ def encode(message, encoding='default'):
             if i == ' ':
                 converted.append('0')
         return ''.join(converted).rstrip('000')
+
+def decode(code, encoding='default'):
+    """Converts a string of morse code into English message
+
+    The encoded message can also be decoded using the same morse chart
+    backwards.
+
+    """
+    reversed_morsetab = {symbol : character for character, symbol in morsetab.items()}
+
+    if encoding == 'default':
+        message = [reversed_morsetab[i] for i in code.split()]
+
+        # For spacing the words
+        letters = 0
+        words = 0
+        index = {}
+
+        for i in range(0, len(code)):
+            if code[i: i+3] == '   ':
+                    if code[i: i+7] == '       ':
+                            words += 1
+                            letters += 1
+                            index[words] = letters
+                    elif code[i+4] and code[i-1] != ' ':
+                        letters += 1
+
+        count = 0
+        for word, letter in index.items():
+            message.insert(letter + count , ' ')
+            count += 1
+        return ''.join(message)
+
+    if encoding == 'binary':
+        return ('Sorry, but it seems that binary encodings can have multiple'
+                ' messages. So for now, we couldn\'t show even one of them.')
