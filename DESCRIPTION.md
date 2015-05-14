@@ -1,0 +1,1 @@
+Morse Talk is a Python library which deals with Morse code.

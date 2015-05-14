@@ -3,12 +3,12 @@ from os import path
 
 here = path.abspath(path.dirname(__file__))
 
-with open(path.join(here, 'DESCRIPTION.rst')) as f:
+with open(path.join(here, 'DESCRIPTION.md')) as f:
     long_description = f.read()
 
 setup(
 	name='morse-talk',
-	version='0.1',
+	version='0.1.1',
 	author='Himanshu Mishra',
 	author_email='himanshu2014iit@gmail.com',
 	description='An aide to Morse Code',
