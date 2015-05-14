@@ -1,0 +1,38 @@
+language: python
+
+notifications:
+  email: true
+
+'''  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/06cf2c44aa8e55ab06c8
+    on_success: always
+    on_failure: always
+    on_start: false
+'''
+python:
+  - 2.6
+  - 2.7
+  - 3.2
+  - 3.3
+  - 3.4
+  - pypy
+
+before_install:
+
+ - sudo apt-get update
+ - sudo apt-get install python3-setuptools python-setuptools
+
+install:
+
+ - sudo apt-get install pep8 python-nose
+ - pip install coverage
+ - pip install --use-mirrors python-coveralls
+
+script:
+
+ - sudo chmod 777 test_travis.sh
+ - ./test_travis.sh
+
+after_success:
+  coveralls
