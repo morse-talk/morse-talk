@@ -7,50 +7,11 @@ Functions to decode messages
 #    All rights reserved.
 #    GNU license.
 
+import encoding
+
 __all__ = ['decode']
 
-morsetab = {
-        'A': '.-',              'a': '.-',
-        'B': '-...',            'b': '-...',
-        'C': '-.-.',            'c': '-.-.',
-        'D': '-..',             'd': '-..',
-        'E': '.',               'e': '.',
-        'F': '..-.',            'f': '..-.',
-        'G': '--.',             'g': '--.',
-        'H': '....',            'h': '....',
-        'I': '..',              'i': '..',
-        'J': '.---',            'j': '.---',
-        'K': '-.-',             'k': '-.-',
-        'L': '.-..',            'l': '.-..',
-        'M': '--',              'm': '--',
-        'N': '-.',              'n': '-.',
-        'O': '---',             'o': '---',
-        'P': '.--.',            'p': '.--.',
-        'Q': '--.-',            'q': '--.-',
-        'R': '.-.',             'r': '.-.',
-        'S': '...',             's': '...',
-        'T': '-',               't': '-',
-        'U': '..-',             'u': '..-',
-        'V': '...-',            'v': '...-',
-        'W': '.--',             'w': '.--',
-        'X': '-..-',            'x': '-..-',
-        'Y': '-.--',            'y': '-.--',
-        'Z': '--..',            'z': '--..',
-        '0': '-----',           ',': '--..--',
-        '1': '.----',           '.': '.-.-.-',
-        '2': '..---',           '?': '..--..',
-        '3': '...--',           ';': '-.-.-.',
-        '4': '....-',           ':': '---...',
-        '5': '.....',           "'": '.----.',
-        '6': '-....',           '-': '-....-',
-        '7': '--...',           '/': '-..-.',
-        '8': '---..',           '(': '-.--.-',
-        '9': '----.',           ')': '-.--.-',
-        ' ': ' ',               '_': '..--.-',
-}
-
-
-def decode(code, encoding='default'):
+def decode(code, encoding_type='default'):
     """Converts a string of morse code into English message
 
     The encoded message can also be decoded using the same morse chart
@@ -58,9 +19,9 @@ def decode(code, encoding='default'):
 
     """
     reversed_morsetab = {symbol: character for character,
-                         symbol in morsetab.items()}
+                         symbol in getattr(encoding, 'morsetab').items()}
 
-    if encoding == 'default':
+    if encoding_type == 'default':
         message = [reversed_morsetab[i] for i in code.split()]
 
         # For spacing the words

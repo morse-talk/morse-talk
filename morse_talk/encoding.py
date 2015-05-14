@@ -50,7 +50,7 @@ morsetab = {
 }
 
 
-def encode(message, encoding='default'):
+def encode(message, encoding_type='default'):
     """Converts a string of message into morse
 
     Two types of marks are there. One is short mark, dot(.) or "dit" and
@@ -80,7 +80,7 @@ def encode(message, encoding='default'):
     """
     message = message.strip()  # No trailing or leading spaces
 
-    if encoding == 'default':
+    if encoding_type == 'default':
         char = list(message)  # char is a list of all the characters in message
         encoded_message = []
         words_len_list = [len(i) for i in message.split()]  # list of length
@@ -105,7 +105,7 @@ def encode(message, encoding='default'):
 
         return ''.join(encoded_message).rstrip('   ')
 
-    elif encoding == 'binary':
+    elif encoding_type == 'binary':
         encoded_message = encode(message)
         converted = []
         for i in encoded_message:
