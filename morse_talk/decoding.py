@@ -7,7 +7,7 @@ Functions to decode messages
 #    All rights reserved.
 #    GNU license.
 
-import encoding
+from . import encoding
 
 __all__ = ['decode']
 
@@ -19,7 +19,7 @@ def decode(code, encoding_type='default'):
 
     """
     reversed_morsetab = {symbol: character for character,
-                         symbol in getattr(encoding, 'morsetab').items()}
+                         symbol in list(getattr(encoding, 'morsetab').items())}
 
     if encoding_type == 'default':
         message = [reversed_morsetab[i] for i in code.split()]
@@ -39,7 +39,7 @@ def decode(code, encoding_type='default'):
                         letters += 1
 
         count = 0
-        for word, letter in index.items():
+        for word, letter in list(index.items()):
             message.insert(letter + count, ' ')
             count += 1
         return ''.join(message)
