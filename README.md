@@ -1,6 +1,20 @@
 # Morse Talk
 Morse Talk is a Python library which deals with [Morse code](http://en.wikipedia.org/wiki/Morse_code)
 
+## Installion
+
+### Using pip
+```sh
+pip install morse-talk
+```
+
+### Development version
+```sh
+git clone https://github.com/OrkoHunter/morse-talk.git
+cd morse-talk/
+python setup.py install
+```
+
 ## Examples
 ```python
 >>> import morse_talk as mtalk
