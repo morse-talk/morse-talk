@@ -44,6 +44,6 @@ def decode(code, encoding_type='default'):
             count += 1
         return ''.join(message)
 
-    if encoding == 'binary':
+    if encoding_type == 'binary':
         return ('Sorry, but it seems that binary encodings can have multiple'
                 ' messages. So for now, we couldn\'t show even one of them.')
