@@ -83,16 +83,16 @@ def encode(message, encoding_type='default'):
     if encoding_type == 'default':
         char = list(message)  # char is a list of all the characters in message
         encoded_message = []
-        words_len_list = [len(i) for i in message.split()]  # list of length
+        words_len_list = [len(word) for word in message.split()]  # list of length
                                         # of words in order of its occurence
 
         checkpoints = []
-        checkpoints.append(words_len_list[0])
-        for i in range(1, len(words_len_list)):
-            checkpoints.append(checkpoints[i-1] + words_len_list[i])
+        for i in range(len(message)):
+            if i == ' ':
+                checkpoints.append(i)
 
         counter = 0
-        for character in char:
+        for character in message: #for character in char:
             try:
                 encoded_message.append(morsetab[character])
 
