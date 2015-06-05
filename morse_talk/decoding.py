@@ -22,14 +22,13 @@ def decode(code, encoding_type='default'):
                          symbol in list(getattr(encoding, 'morsetab').items())}
 
     if encoding_type == 'default':
-        message = [reversed_morsetab[i] for i in code.split()]
 
         # For spacing the words
         letters = 0
         words = 0
         index = {}
 
-        for i in range(0, len(code)):
+        for i in range(len(code)):
             if code[i: i+3] == '   ':
                     if code[i: i+7] == '       ':
                             words += 1
@@ -38,10 +37,9 @@ def decode(code, encoding_type='default'):
                     elif code[i+4] and code[i-1] != ' ':  # Check for '   '
                         letters += 1
 
-        count = 0
-        for word, letter in list(index.items()):
-            message.insert(letter + count, ' ')
-            count += 1
+        message = [reversed_morsetab[i] for i in code.split()]
+        for i, (word, letter) in enumerate(list(index.items())):
+            message.insert(letter + i, ' ')
         return ''.join(message)
 
     if encoding_type == 'binary':
