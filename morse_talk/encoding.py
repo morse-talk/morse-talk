@@ -81,38 +81,9 @@ def encode(message, encoding_type='default'):
     message = message.strip()  # No trailing or leading spaces
 
     if encoding_type == 'default':
-        char = list(message)  # char is a list of all the characters in message
-        encoded_message = []
-        words_len_list = [len(word) for word in message.split()]  # list of length
-                                        # of words in order of its occurence
-
-        checkpoints = []
-        for i in range(len(message)):
-            if i == ' ':
-                checkpoints.append(i)
-
-        counter = 0
-        for character in message: #for character in char:
-            try:
-                encoded_message.append(morsetab[character])
-
-                if counter in checkpoints:
-                    encoded_message.append('       ')  # end of a word
-                else:
-                    encoded_message.append('   ')  # end of a letter
-            except KeyError:
-                print("WARNING: Unsupported characters in the string")
-
-        return ''.join(encoded_message).rstrip('   ')
+        letter_sep = '   '
+        return letter_sep.join([morsetab.get(c, '?') for c in message])
 
     elif encoding_type == 'binary':
-        encoded_message = encode(message)
-        converted = []
-        for i in encoded_message:
-            if i == '.':
-                converted.append('1')
-            if i == '-':
-                converted.append('111')
-            if i == ' ':
-                converted.append('0')
-        return ''.join(converted).rstrip('000')
+        bin_conv = { '.': '1', '-': '111', ' ': '0'}
+        return ''.join([bin_conv.get(i, '?') for i in encode(message)])
