@@ -6,8 +6,18 @@ Function to enunciate string of plain text in morse code
 #   Email : arafsheikh@gmail.com
 
 import wave
-import sys
-import os
+import sys, os
+import tempfile
+try:
+    from ossaudiodev import open as ossOpen    # Play audio on Linux
+    OS = 'linux'
+except ImportError:
+    try:
+        import winsound    # Play audio on Windows
+        OS = 'win'
+    except ImportError:
+        print 'Unsupported system'
+        exit()
 
 pt = os.path.dirname(os.path.realpath(__file__))
 
@@ -53,17 +63,42 @@ files = {
         '(': os.path.join(pt, 'sound/Parenthesis_Open')
     }
 
-sequence = []   # The sequence of wave files will be stored here and later merged
 
-def enunciate(message, encoding_type='default', outfile='sys.stdout'):
+def play(path):
+    """Plays the referenced wave file
+
+    Parameters
+    ----------
+    path : Absolute path to the wave file
+    
+    """
+    if OS == 'win':
+        winsound.PlaySound(path, winsound.SND_FILENAME)
+        
+    elif OS == 'linux':
+        # http://stackoverflow.com/a/311634
+        s = waveOpen(path,'rb')
+        (nc,sw,fr,nf,comptype, compname) = s.getparams( )
+        dsp = ossOpen('/dev/dsp','w')
+        try:
+          from ossaudiodev import AFMT_S16_NE
+        except ImportError:
+            if byteorder == "little":
+                AFMT_S16_NE = ossaudiodev.AFMT_S16_LE
+            else:
+                AFMT_S16_NE = ossaudiodev.AFMT_S16_BE
+        dsp.setparameters(AFMT_S16_NE, nc, fr)
+        data = s.readframes(nf)
+        s.close()
+        dsp.write(data)
+        dsp.close()
+
+
+def enunciate(message, encoding_type='default'):
     """Converts the given message in plain text to morse audio
 
-    The raw PCM data will be written to stdout if 'outfile' parameter
-    is set to sys.stdout(default). This data can then be piped to
-    other programs, for example, aplay(Linux).
-    
-    A Wave(wav) file will be created in the current directory if
-    outfile parameter is provided.
+    A wave(.wav) file will be created in the operating system's
+    temporary directory; then will be played and deleted.
 
     Parameters
     ----------
@@ -72,38 +107,36 @@ def enunciate(message, encoding_type='default', outfile='sys.stdout'):
     encoding : Type of encoding
         Supported types are morse(default)
 
-    outfile : Output file
-        Output raw PCM data to stdout by default.
-        Wave file will be created in current dir if parameter provided
-
     """
 
     if(encoding_type != 'default'):
         return ('Only morse supported at the moment')
 
+    sequence = []   # The sequence of wave files will be stored here and later merged
+    
     message = str(message.strip().upper())   # Avoid complications
     message = list(message)
 
     # Populate sequence(list) with sound files
     for c in message:
         sequence.append(files.get(c, '?'))    
-
-    # Print to stdout(default)
-    if(outfile == 'sys.stdout'):
-        for infile in sequence:
-            w = wave.open(infile, 'rb')
-            sys.stdout.write(w.readframes(w.getnframes()))  # Wirte raw PCM data to stdout. Can be piped to aplay(Linux) 
-
-    # Else create a wave file
-    else:
-        # Set all the necessary parameters for the output wave file
-        w = wave.open(sequence[0], 'rb')
-        output = wave.open(outfile, 'wb')
-        output.setparams(w.getparams())
-        w.close()
+    
+    # Create a temporary output wave file
+    outfile, outfile_path = tempfile.mkstemp(suffix = '.wav')
+    
+    # Set all the necessary parameters for the output wave file
+    w = wave.open(sequence[0], 'rb')
+    output = wave.open(outfile_path, 'wb')
+    output.setparams(w.getparams())
+    w.close()
         
-        for infile in sequence:
-            w = wave.open(infile, 'rb')
-            output.writeframes(w.readframes(w.getnframes()))    # Append each file's data to output file
-            w.close()
-        output.close()
+    for infile in sequence:
+        w = wave.open(infile, 'rb')
+        output.writeframes(w.readframes(w.getnframes()))    # Append each file's data to output file
+        w.close()
+   
+    output.close()  # Close file opened with wave module's open function
+    os.close(outfile)   # Close the temporary file
+    
+    play(outfile_path)
+    os.remove(outfile_path)
