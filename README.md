@@ -37,7 +37,7 @@ python setup.py install
 
 # Enunciate a string to morse code
 >>> message = 'SOS'
->>> mtalk.enunciate(message, outfile = 'audio.wav')
+>>> mtalk.enunciate(message)
 ```
 
 ## Morse Code
