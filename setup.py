@@ -18,11 +18,7 @@ setup(
     keywords='morse code talk',
     packages=[
         'morse_talk'
-<<<<<<< HEAD
     ],
-=======
-    ]
->>>>>>> Updated setup.py with test_suite
     test_suite='nose.collector',
     tests_require=['nose>=0.10.1']
 
