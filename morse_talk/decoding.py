@@ -40,7 +40,7 @@ def decode(code, encoding_type='default'):
         message = [reversed_morsetab[i] for i in code.split()]
         for i, (word, letter) in enumerate(list(index.items())):
             message.insert(letter + i, ' ')
-        return ''.join(message)
+        return ''.join(message).lower()
 
     if encoding_type == 'binary':
         return ('Sorry, but it seems that binary encodings can have multiple'
