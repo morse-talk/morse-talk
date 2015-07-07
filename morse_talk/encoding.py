@@ -5,7 +5,7 @@ Functions to encode strings
 #    Copyright (C) 2015 by
 #    Himanshu Mishra <himanshu2014iit@gmail.com>
 #    All rights reserved.
-#    GNU license.
+#    MIT license.
 
 __all__ = ['encode']
 
