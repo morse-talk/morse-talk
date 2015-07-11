@@ -8,16 +8,11 @@ Function to enunciate string of plain text in morse code
 import wave
 import sys, os
 import tempfile
-try:
-    from ossaudiodev import open as ossOpen    # Play audio on Linux
-    OS = 'linux'
-except ImportError:
-    try:
-        import winsound    # Play audio on Windows
-        OS = 'win'
-    except ImportError:
-        print 'Unsupported system'
-        exit()
+import platform
+
+OS = platform.system()  # Get the operating system name
+if OS == 'Windows':
+    import winsound
 
 pt = os.path.dirname(os.path.realpath(__file__))
 
@@ -72,26 +67,11 @@ def play(path):
     path : Absolute path to the wave file
     
     """
-    if OS == 'win':
+    if OS == 'Windows':
         winsound.PlaySound(path, winsound.SND_FILENAME)
         
-    elif OS == 'linux':
-        # http://stackoverflow.com/a/311634
-        s = waveOpen(path,'rb')
-        (nc,sw,fr,nf,comptype, compname) = s.getparams( )
-        dsp = ossOpen('/dev/dsp','w')
-        try:
-          from ossaudiodev import AFMT_S16_NE
-        except ImportError:
-            if byteorder == "little":
-                AFMT_S16_NE = ossaudiodev.AFMT_S16_LE
-            else:
-                AFMT_S16_NE = ossaudiodev.AFMT_S16_BE
-        dsp.setparameters(AFMT_S16_NE, nc, fr)
-        data = s.readframes(nf)
-        s.close()
-        dsp.write(data)
-        dsp.close()
+    elif OS == 'Linux':
+        os.system("aplay -q " + path)   # quiet mode to supress output
 
 
 def enunciate(message, encoding_type='default'):
