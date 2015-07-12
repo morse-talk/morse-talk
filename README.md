@@ -1,5 +1,5 @@
 # Morse Talk
-Morse Talk is a Python library which deals with [Morse code](http://en.wikipedia.org/wiki/Morse_code)
+Morse Talk is a Python library which deals with [Morse code](http://en.wikipedia.org/wiki/Morse_code). The documentation is available at http://morse-talk.readthedocs.org/en/latest
 
 ## Installion
 
