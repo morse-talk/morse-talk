@@ -34,6 +34,10 @@ python setup.py install
 >>> code = '-...   ---   --   -...       -..-       .--.   --'
 >>> mtalk.decode(code)
 'bomb x pm'
+
+# Enunciate a string to morse code
+>>> message = 'SOS'
+>>> mtalk.enunciate(message)
 ```
 
 ## Morse Code
