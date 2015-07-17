@@ -14,7 +14,7 @@ setup(
 	description='An aide to Morse Code',
 	long_description=long_description,
 	url='https://github.com/orkohunter/morse-talk',
-	download_url='https://github.com/orkohunter/morse-talk/tarball/v0.1',
+	download_url='https://github.com/orkohunter/morse-talk/archive/master.zip',
 	license='MIT',
 	classifiers = [
 	'Development Status :: 4 - Beta',
