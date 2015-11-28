@@ -20,23 +20,29 @@ python setup.py install
 ## Examples
 ```python
 >>> import morse_talk as mtalk
-
+```
 # Encoding in morse
+```python
 >>> mtalk.encode('Alpha Ranger 45 departed')
 '.-   .-..   .--.   ....   .-       .-.   .-   -.   --.   .   .-.       ....-   .....
        -..   .   .--.   .-   .-.   -   .   -..'
+```
 
 # Encoding using binary pattern
+```python
 >>> mtalk.encode('Alpha Ranger 45 knocked down', encoding_type='binary')
 '101110001011101010001011101110100010101010001011100000001011101000101110001110100011101110100010001011101000000010101010111000101010101000000011101011100011101000111011101110001110101110100011101011100010001110101000000011101010001110111011100010111011100011101'
+```
 
 # Decoding a code encoded in morse
+```python
 >>> code = '-...   ---   --   -...       -..-       .--.   --'
 >>> mtalk.decode(code)
 'bomb x pm'
 ```
 
 # Decoding a binary pattern
+```python
 >>> bin = mtalk.encode('Alpha Ranger 45 knocked down', encoding_type='binary')
 >>> mtalk.decode(bin, encoding_type='binary')
 'ALPHA RANGER 45 KNOCKED DOWN'
