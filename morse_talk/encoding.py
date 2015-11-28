@@ -10,32 +10,32 @@ Functions to encode strings
 __all__ = ['encode']
 
 morsetab = {
-        'A': '.-',              'a': '.-',
-        'B': '-...',            'b': '-...',
-        'C': '-.-.',            'c': '-.-.',
-        'D': '-..',             'd': '-..',
-        'E': '.',               'e': '.',
-        'F': '..-.',            'f': '..-.',
-        'G': '--.',             'g': '--.',
-        'H': '....',            'h': '....',
-        'I': '..',              'i': '..',
-        'J': '.---',            'j': '.---',
-        'K': '-.-',             'k': '-.-',
-        'L': '.-..',            'l': '.-..',
-        'M': '--',              'm': '--',
-        'N': '-.',              'n': '-.',
-        'O': '---',             'o': '---',
-        'P': '.--.',            'p': '.--.',
-        'Q': '--.-',            'q': '--.-',
-        'R': '.-.',             'r': '.-.',
-        'S': '...',             's': '...',
-        'T': '-',               't': '-',
-        'U': '..-',             'u': '..-',
-        'V': '...-',            'v': '...-',
-        'W': '.--',             'w': '.--',
-        'X': '-..-',            'x': '-..-',
-        'Y': '-.--',            'y': '-.--',
-        'Z': '--..',            'z': '--..',
+        'A': '.-',
+        'B': '-...',
+        'C': '-.-.',
+        'D': '-..',
+        'E': '.',
+        'F': '..-.',
+        'G': '--.',
+        'H': '....',
+        'I': '..',
+        'J': '.---',
+        'K': '-.-',
+        'L': '.-..',
+        'M': '--',
+        'N': '-.',
+        'O': '---',
+        'P': '.--.',
+        'Q': '--.-',
+        'R': '.-.',
+        'S': '...',
+        'T': '-', 
+        'U': '..-',
+        'V': '...-',
+        'W': '.--',
+        'X': '-..-',
+        'Y': '-.--',
+        'Z': '--..',
         '0': '-----',           ',': '--..--',
         '1': '.----',           '.': '.-.-.-',
         '2': '..---',           '?': '..--..',
@@ -50,7 +50,7 @@ morsetab = {
 }
 
 
-def encode(message, encoding_type='default'):
+def encode(message, encoding_type='default', letter_sep = '   '):
     """Converts a string of message into morse
 
     Two types of marks are there. One is short mark, dot(.) or "dit" and
@@ -81,9 +81,9 @@ def encode(message, encoding_type='default'):
     message = message.strip()  # No trailing or leading spaces
 
     if encoding_type == 'default':
-        letter_sep = '   '
-        return letter_sep.join([morsetab.get(c, '?') for c in message])
+        return letter_sep.join([morsetab.get(c.upper(), '?') for c in message])
 
     elif encoding_type == 'binary':
         bin_conv = { '.': '1', '-': '111', ' ': '0'}
-        return ''.join([bin_conv.get(i, '?') for i in encode(message)])
+        #return ''.join([bin_conv.get(i, '?') for i in encode(message, letter_sep = ' ')])
+        return ''.join(["0" + bin_conv.get(i, '?') for i in encode(message, letter_sep = ' ')])[1:]
