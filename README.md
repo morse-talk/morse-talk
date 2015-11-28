@@ -1,7 +1,9 @@
+[![Build Status](https://travis-ci.org/OrkoHunter/morse-talk.svg?branch=master)](https://travis-ci.org/OrkoHunter/morse-talk)
+
 # Morse Talk
 Morse Talk is a Python library which deals with [Morse code](http://en.wikipedia.org/wiki/Morse_code)
 
-## Installion
+## Installation
 
 ### Using pip
 ```sh
