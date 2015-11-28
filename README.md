@@ -38,7 +38,7 @@ python setup.py install
 ```python
 >>> code = '-...   ---   --   -...       -..-       .--.   --'
 >>> mtalk.decode(code)
-'bomb x pm'
+'BOMB X PM'
 ```
 
 # Decoding a binary pattern
