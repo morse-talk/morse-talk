@@ -8,10 +8,10 @@ Functions to decode messages
 #    GNU license.
 
 from . import encoding
-from encoding import morsetab, encode
+
 __all__ = ['decode']
 
-binary_lookup = {encode(key, encoding_type='binary'): key for key, value in morsetab.items()}
+binary_lookup = {encoding.encode(key, encoding_type='binary'): key for key, value in encoding.morsetab.items()}
 
 def decode(code, encoding_type='default'):
     """Converts a string of morse code into English message
@@ -45,7 +45,7 @@ def decode(code, encoding_type='default'):
         return ''.join(message)
 
     if encoding_type == 'binary':
-        lst = map(lambda word: word.split("0"*3), code.split("0"*7))
+        lst = list(map(lambda word: word.split("0"*3), code.split("0"*7)))
         # list of list of character (each sub list being a word)
         for i, word in enumerate(lst):
             for j, bin_letter in enumerate(word):
