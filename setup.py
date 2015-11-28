@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='morse-talk',
-    version='0.1.3',
+    version='0.2',
     author='Himanshu Mishra',
     author_email='himanshu2014iit@gmail.com',
     description='An aide to Morse Code',
