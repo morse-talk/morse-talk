@@ -1,0 +1,34 @@
+sudo : false
+
+language: python
+
+python:
+  - 2.7
+  - 3.2
+  - 3.3
+  - 3.4
+  - "pypy"
+  - "pypy3"
+
+cache:
+  directories:
+    - $HOME/.cache/pip
+
+addons:
+  apt:
+    sources:
+      - build-essential
+
+before_install:
+
+ - pip install --upgrade pip
+
+install:
+ - pip install .
+
+script:
+  - cd `mktemp -d`
+  - nosetests --verbosity=2
+
+notifications:
+  email: false
