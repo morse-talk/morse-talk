@@ -31,8 +31,8 @@ def decode(code, encoding_type='default'):
         index = {}
 
         for i in range(len(code)):
-            if code[i: i+3] == '   ':
-                    if code[i: i+7] == '       ':
+            if code[i: i+3] == ' '*3:
+                    if code[i: i+7] == ' '*7:
                             words += 1
                             letters += 1
                             index[words] = letters
