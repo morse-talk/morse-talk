@@ -28,7 +28,7 @@ install:
 
 script:
   - cd `mktemp -d`
-  - nosetests --verbosity=2
+  - nosetests --verbosity=2 --with-doctest
 
 notifications:
   email: false

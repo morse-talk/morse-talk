@@ -9,48 +9,85 @@ Functions to encode strings
 
 __all__ = ['encode']
 
-morsetab = {
-        'A': '.-',
-        'B': '-...',
-        'C': '-.-.',
-        'D': '-..',
-        'E': '.',
-        'F': '..-.',
-        'G': '--.',
-        'H': '....',
-        'I': '..',
-        'J': '.---',
-        'K': '-.-',
-        'L': '.-..',
-        'M': '--',
-        'N': '-.',
-        'O': '---',
-        'P': '.--.',
-        'Q': '--.-',
-        'R': '.-.',
-        'S': '...',
-        'T': '-', 
-        'U': '..-',
-        'V': '...-',
-        'W': '.--',
-        'X': '-..-',
-        'Y': '-.--',
-        'Z': '--..',
-        '0': '-----',           ',': '--..--',
-        '1': '.----',           '.': '.-.-.-',
-        '2': '..---',           '?': '..--..',
-        '3': '...--',           ';': '-.-.-.',
-        '4': '....-',           ':': '---...',
-        '5': '.....',           "'": '.----.',
-        '6': '-....',           '-': '-....-',
-        '7': '--...',           '/': '-..-.',
-        '8': '---..',           '(': '-.--.-',
-        '9': '----.',           ')': '-.--.-',
-        ' ': ' ',               '_': '..--.-',
-}
+import collections
 
+morsetab = collections.OrderedDict([
+    ('A', '.-'),
+    ('B', '-...'),
+    ('C', '-.-.'),
+    ('D', '-..'),
+    ('E', '.'),
+    ('F', '..-.'),
+    ('G', '--.'),
+    ('H', '....'),
+    ('I', '..'),
+    ('J', '.---'),
+    ('K', '-.-'),
+    ('L', '.-..'),
+    ('M', '--'),
+    ('N', '-.'),
+    ('O', '---'),
+    ('P', '.--.'),
+    ('Q', '--.-'),
+    ('R', '.-.'),
+    ('S', '...'),
+    ('T', '-'), 
+    ('U', '..-'),
+    ('V', '...-'),
+    ('W', '.--'),
+    ('X', '-..-'),
+    ('Y', '-.--'),
+    ('Z', '--..'),
+    ('0', '-----'),
+    ('1', '.----'),
+    ('2', '..---'),
+    ('3', '...--'),
+    ('4', '....-'),
+    ('5', '.....'),
+    ('6', '-....'),
+    ('7', '--...'),
+    ('8', '---..'),
+    ('9', '----.'),
+    (' ', ' '),    
+    (',', '--..--'),
+    ('.', '.-.-.-'),
+    ('?', '..--..'),
+    (';', '-.-.-.'),
+    (':', '---...'),
+    ("'", '.----.'),
+    ('-', '-....-'),
+    ('/', '-..-.'),
+    ('(', '-.--.-'),
+    (')', '-.--.-'),
+    ('_', '..--.-')
+])
 
-def encode(message, encoding_type='default', letter_sep = '   '):
+def _encode_morse(message):
+    """
+    >>> message = "SOS"
+    >>> _encode_morse(message)
+    ['...', '---', '...']
+    """
+    return [morsetab.get(c.upper(), '?') for c in message]
+
+def _encode_binary(message, on=1, off=0):
+    """
+    >>> message = "SOS"
+    >>> _encode_binary(message)
+    [1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1]
+
+    >>> _encode_binary(message, on='1', off='0')
+    ['1', '0', '1', '0', '1', '0', '0', '0', '1', '1', '1', '0', '1', '1', '1', '0', '1', '1', '1', '0', '0', '0', '1', '0', '1', '0', '1']
+    """
+    l = _encode_morse(message)
+    s = ' '.join(l)
+    l = list(s)
+    bin_conv = { '.': [on], '-': [on]*3, ' ': [off]}
+    l = map(lambda symb: [off] + bin_conv[symb], l)
+    lst = [item for sublist in l for item in sublist] # flatten list
+    return lst[1:]
+
+def encode(message, encoding_type='default', letter_sep = ' '*3, strip=True):
     """Converts a string of message into morse
 
     Two types of marks are there. One is short mark, dot(.) or "dit" and
@@ -66,6 +103,10 @@ def encode(message, encoding_type='default', letter_sep = '   '):
 
     The short gap is represented by 000 and the medium gap by 0000000.
 
+    >>> message = "SOS"
+    >>> encode(message)
+    '...   ---   ...'
+
     Parameters
     ----------
     message : String
@@ -76,14 +117,25 @@ def encode(message, encoding_type='default', letter_sep = '   '):
     Returns
     -------
     encoded_message : String
-
     """
-    message = message.strip()  # No trailing or leading spaces
+    if strip:
+        message = message.strip()  # No trailing or leading spaces
+
+    encoding_type = encoding_type.lower()
+    allowed_encoding_type = ['default', 'binary']
 
     if encoding_type == 'default':
-        return letter_sep.join([morsetab.get(c.upper(), '?') for c in message])
+        return letter_sep.join(_encode_morse(message))
 
     elif encoding_type == 'binary':
-        bin_conv = { '.': '1', '-': '111', ' ': '0'}
-        #return ''.join([bin_conv.get(i, '?') for i in encode(message, letter_sep = ' ')])
-        return ''.join(["0" + bin_conv.get(i, '?') for i in encode(message, letter_sep = ' ')])[1:]
+        return ''.join(_encode_binary(message, on='1', off='0'))
+
+    else:
+        raise NotImplementedError("encoding_type must be in %s" % allowed_encoding_type)
+
+def main():
+    import doctest
+    doctest.testmod()
+
+if __name__ == '__main__':
+    main()
