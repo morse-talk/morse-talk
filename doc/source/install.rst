@@ -21,7 +21,7 @@ You can install the development version (at github.com) with
 
 ::
 
-  git clone https://github.com/orkohunter/morse-talk
+  git clone https://github.com/morse-talk/morse-talk
   cd morse-talk/
   python setup.py install
 

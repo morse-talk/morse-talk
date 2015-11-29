@@ -1,15 +1,19 @@
 from setuptools import setup, find_packages
+import sys
+
+sys.path.insert(0, 'morse_talk')
+import release
 
 
 setup(
-    name='morse-talk',
-    version='0.2',
-    author='morse-talk developers',
-    author_email='himanshu2014iit@gmail.com',
-    description='An aide to Morse Code',
+    name=release.name,
+    version=release.__version__,
+    author=release.author,
+    author_email=release.author_email,
+    description=release.description,
     url='https://github.com/morse-talk/morse-talk',
     download_url='https://github.com/morse-talk/morse-talk/archive/master.zip',
-    license='MIT',
+    license='GPLv2',
     classifiers=[
             'Development Status :: 4 - Beta',
             'Programming Language :: Python :: 2',
