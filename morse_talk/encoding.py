@@ -87,7 +87,7 @@ def _encode_binary(message, on=1, off=0):
     lst = [item for sublist in l for item in sublist] # flatten list
     return lst[1:]
 
-def encode(message, encoding_type='default', letter_sep = '   ', strip=True):
+def encode(message, encoding_type='default', letter_sep = ' '*3, strip=True):
     """Converts a string of message into morse
 
     Two types of marks are there. One is short mark, dot(.) or "dit" and
@@ -118,11 +118,17 @@ def encode(message, encoding_type='default', letter_sep = '   ', strip=True):
     if strip:
         message = message.strip()  # No trailing or leading spaces
 
+    encoding_type = encoding_type.lower()
+    allowed_encoding_type = ['default', 'binary']
+
     if encoding_type == 'default':
         return letter_sep.join(_encode_morse(message))
 
     elif encoding_type == 'binary':
         return ''.join(_encode_binary(message, on='1', off='0'))
+
+    else:
+        raise NotImplementedError("encoding_type must be in %s" % allowed_encoding_type)
 
 def main():
     import doctest

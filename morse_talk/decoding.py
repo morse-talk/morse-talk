@@ -23,6 +23,9 @@ def decode(code, encoding_type='default'):
     reversed_morsetab = {symbol: character for character,
                          symbol in list(getattr(encoding, 'morsetab').items())}
 
+    encoding_type = encoding_type.lower()
+    allowed_encoding_type = ['default', 'binary']
+
     if encoding_type == 'default':
 
         # For spacing the words
@@ -44,8 +47,8 @@ def decode(code, encoding_type='default'):
             message.insert(letter + i, ' ')
         return ''.join(message)
 
-    if encoding_type == 'binary':
-        lst = list(map(lambda word: word.split("0"*3), code.split("0"*7)))
+    elif encoding_type == 'binary':
+        lst = list(map(lambda word: word.split('0'*3), code.split('0'*7)))
         # list of list of character (each sub list being a word)
         for i, word in enumerate(lst):
             for j, bin_letter in enumerate(word):
@@ -53,3 +56,6 @@ def decode(code, encoding_type='default'):
             lst[i] = "".join(lst[i])
         s = " ".join(lst)
         return s
+
+    else:
+        raise NotImplementedError("encoding_type must be in %s" % allowed_encoding_type)
