@@ -38,12 +38,12 @@ def decode(code, encoding_type='default'):
 
         for i in range(len(code)):
             if code[i: i+3] == ' '*3:
-                    if code[i: i+7] == ' '*7:
-                            words += 1
-                            letters += 1
-                            index[words] = letters
-                    elif code[i+4] and code[i-1] != ' ':  # Check for '   '
-                        letters += 1
+                if code[i: i+7] == ' '*7:
+                    words += 1
+                    letters += 1
+                    index[words] = letters
+                elif code[i+4] and code[i-1] != ' ':  # Check for '   '
+                    letters += 1
 
         message = [reversed_morsetab[i] for i in code.split()]
         for i, (word, letter) in enumerate(list(index.items())):
