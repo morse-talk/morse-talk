@@ -5,7 +5,7 @@ Functions to encode strings
 #    Copyright (C) 2015 by
 #    Himanshu Mishra <himanshu2014iit@gmail.com>
 #    All rights reserved.
-#    GNU license.
+#    GNU GPL v2 license.
 
 __all__ = ['encode']
 
@@ -31,7 +31,7 @@ morsetab = collections.OrderedDict([
     ('Q', '--.-'),
     ('R', '.-.'),
     ('S', '...'),
-    ('T', '-'), 
+    ('T', '-'),
     ('U', '..-'),
     ('V', '...-'),
     ('W', '.--'),
@@ -48,7 +48,7 @@ morsetab = collections.OrderedDict([
     ('7', '--...'),
     ('8', '---..'),
     ('9', '----.'),
-    (' ', ' '),    
+    (' ', ' '),
     (',', '--..--'),
     ('.', '.-.-.-'),
     ('?', '..--..'),

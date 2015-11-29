@@ -5,7 +5,7 @@ Functions to decode messages
 #    Copyright (C) 2015 by
 #    Himanshu Mishra <himanshu2014iit@gmail.com>
 #    All rights reserved.
-#    GNU license.
+#    GNU GPL v2 license.
 
 from . import encoding
 
