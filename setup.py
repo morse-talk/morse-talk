@@ -7,7 +7,7 @@ import release
 
 setup(
     name=release.name,
-    version=release.version,
+    version=release.__version__,
     author=release.author,
     author_email=release.author_email,
     description=release.description,

@@ -4,7 +4,7 @@ name = 'morse-talk'
 major = '0'
 minor = '2'
 
-version = major + '.' + minor
+__version__ = major + '.' + minor
 
 date = '2015-11-28'  # YYYY-MM-DD
 
