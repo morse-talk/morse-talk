@@ -19,6 +19,9 @@ def decode(code, encoding_type='default'):
     The encoded message can also be decoded using the same morse chart
     backwards.
 
+    >>> code = '...   ---   ...'
+    >>> decode(code)
+    'SOS'
     """
     reversed_morsetab = {symbol: character for character,
                          symbol in list(getattr(encoding, 'morsetab').items())}

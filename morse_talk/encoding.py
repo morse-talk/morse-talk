@@ -103,6 +103,10 @@ def encode(message, encoding_type='default', letter_sep = ' '*3, strip=True):
 
     The short gap is represented by 000 and the medium gap by 0000000.
 
+    >>> message = "SOS"
+    >>> encode(message)
+    '...   ---   ...'
+
     Parameters
     ----------
     message : String
@@ -113,7 +117,6 @@ def encode(message, encoding_type='default', letter_sep = ' '*3, strip=True):
     Returns
     -------
     encoded_message : String
-
     """
     if strip:
         message = message.strip()  # No trailing or leading spaces
