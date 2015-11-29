@@ -1,6 +1,7 @@
 [![pypi version](https://img.shields.io/pypi/v/morse-talk.svg)](https://pypi.python.org/pypi/morse-talk/)
 [![Build Status](https://travis-ci.org/morse-talk/morse-talk.svg?branch=master)](https://travis-ci.org/morse-talk/morse-talk)
 [![Code Health](https://landscape.io/github/morse-talk/morse-talk/master/landscape.svg?style=flat)](https://landscape.io/github/morse-talk/morse-talk/master)
+[![Documentation Status](https://readthedocs.org/projects/morse-talk/badge/?version=latest)](http://morse-talk.readthedocs.org/?badge=latest)
 
 # Morse Talk
 Morse Talk is a Python library which deals with [Morse code](http://en.wikipedia.org/wiki/Morse_code)
