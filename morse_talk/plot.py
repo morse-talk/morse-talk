@@ -12,11 +12,11 @@ Usage:
 $ python plot.py --msg "MORSE CODE"
 """
 
-import plotter
 import argparse
 
 import matplotlib.pyplot as plt
 import morse_talk as mtalk
+import morse_talk.plotter
 
 def main():
     parser = argparse.ArgumentParser(description='Send morse code')
