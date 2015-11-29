@@ -8,9 +8,9 @@ import release
 setup(
     name=release.name,
     version=release.__version__,
-    author=release.author,
-    author_email=release.author_email,
-    description=release.description,
+    author=release.__author__,
+    author_email=release.__email__,
+    description=release.__description__,
     url='https://github.com/morse-talk/morse-talk',
     download_url='https://github.com/morse-talk/morse-talk/archive/master.zip',
     license='GPLv2',

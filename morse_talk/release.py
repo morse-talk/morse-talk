@@ -6,9 +6,9 @@ minor = '2'
 
 __version__ = major + '.' + minor
 
-date = '2015-11-28'  # YYYY-MM-DD
+__date__ = '2015-11-28'  # YYYY-MM-DD
 
-description = 'An aide to Morse Code'
+__description__ = 'An aide to Morse Code'
 
-author = 'morse-talk developers'
-author_email = 'himanshu2014iit@gmail.com'
+__author__ = 'morse-talk developers'
+__email__ = 'himanshu2014iit@gmail.com'
