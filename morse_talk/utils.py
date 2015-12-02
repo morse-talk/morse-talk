@@ -13,7 +13,14 @@ All rights reserved.
 WORD = 'PARIS'  # Reference word for code speed
 # http://www.kent-engineers.com/codespeed.htm
 
+WPM = 15  # default code speed
+FRAMERATE = 44100 / 4  # default framerate
+FREQUENCY = 750  # default sound frequency
+AMPLITUDE = 0.5
+
 import morse_talk as mtalk
+from itertools import count
+import math
 
 def _repeat_word(word, N, word_space=" "):
     """
@@ -62,7 +69,7 @@ def wpm_to_duration(wpm, output='timedelta', word=WORD):
         'timedelta'
         'float'
         'decimal'
-    word : String - reference word (PARIS by default)
+    word : string - reference word (PARIS by default)
 
     Returns
     -------
@@ -76,6 +83,9 @@ def wpm_to_duration(wpm, output='timedelta', word=WORD):
 
     >>> wpm_to_duration(5, output='timedelta')
     datetime.timedelta(0, 0, 240000)
+
+    >>> wpm_to_duration(15, output='decimal')
+    Decimal('80')
 
     >>> wpm_to_duration(13, output='decimal')
     Decimal('92.30769230769230769230769231')
@@ -97,6 +107,119 @@ def wpm_to_duration(wpm, output='timedelta', word=WORD):
     else:
         raise NotImplementedError("output must be in %s" % allowed_output)
     return duration
+
+def duration(message, wpm, output='timedelta', word_ref=WORD, word_spaced=False):
+    """
+    Calculate duration to send a message at a given code speed 
+    (calculated using reference word PARIS)
+
+    Parameters
+    ----------
+    word : string
+    wpm : int or float - word per minute
+    output : String - type of output
+        'timedelta'
+        'float'
+        'decimal'
+    word : string - reference word (PARIS by default)
+    word_spaced : bool - calculate with spaces between 2 words (default is False)
+
+    Returns
+    -------
+    duration : timedelta or float or decimal.Decimal - duration of the word `word`
+
+    >>> duration(_repeat_word('PARIS', 5), 5, word_spaced=True)
+    datetime.timedelta(0, 60)
+
+    >>> duration('PARIS', 15)
+    datetime.timedelta(0, 3, 440000)
+
+    >>> duration('SOS', 15)
+    datetime.timedelta(0, 2, 160000)
+    """
+    elt_duration = wpm_to_duration(wpm, output=output)
+    word_length = mlength(message, word_spaced=word_spaced)
+    return word_length * elt_duration
+
+def samples_nb(message, wpm, framerate=FRAMERATE, word_spaced=False):
+    """
+    Calculate the number of samples for a given word at a given framerate (samples / seconds)
+
+    >>> samples_nb('SOS', 15)
+    23814
+    """
+    return int(duration(message, wpm, output='float', word_spaced=word_spaced) / 1000.0 * framerate)
+
+def _seconds_per_dot(word_ref=WORD):
+    """
+    >>> _seconds_per_dot('PARIS')
+    1.2
+    """
+    return 60 / mlength(word_ref) # 1.2 with 'PARIS'
+
+def _get_speed(element_duration, wpm, word_ref=WORD):
+    """
+    Returns
+        element duration when element_duration and/or code speed is given
+        wpm    
+
+    >>> _get_speed(0.2, None)
+    (0.2, 5.999999999999999)
+
+    >>> _get_speed(None, 15)
+    (0.08, 15)
+
+    >>> _get_speed(None, None)
+    (0.08, 15)
+    """
+    seconds_per_dot = _seconds_per_dot(word_ref)
+    if element_duration is None and wpm is None:
+        #element_duration = 1
+        #wpm = seconds_per_dot / element_duration
+        wpm = WPM
+        element_duration= wpm_to_duration(wpm, output='float', word=WORD) / 1000.0
+        return element_duration, wpm
+    elif element_duration is not None and wpm is None:
+        wpm = seconds_per_dot / element_duration
+        return element_duration, wpm
+    elif element_duration is None and wpm is not None:
+        element_duration= wpm_to_duration(wpm, output='float', word=WORD) / 1000.0
+        return element_duration, wpm
+    else:
+        raise NotImplementedError("Can't set both element_duration and wpm")
+
+def display(message, wpm, element_duration, word_ref):
+    """
+    Display 
+        text message
+        morse code
+        binary morse code
+    """
+    print("text : %r" % message)
+    print("morse: %s" % mtalk.encode(message))
+    print("bin  : %s" % mtalk.encode(message, encoding_type='binary'))
+    print("")
+    print("code speed : %s wpm" % wpm)
+    print("element_duration : %s" % element_duration)
+    print("reference word : %r" % word_ref)
+    print("")
+
+def _limit_value(value, upper=1.0, lower=0.0):
+    """
+    Returs value (such as amplitude) to upper and lower value
+    
+    >>> _limit_value(0.5)
+    0.5
+
+    >>> _limit_value(1.5)
+    1.0
+
+    >>> _limit_value(-1.5)
+    0.0
+    """
+    if value > upper: return(upper)
+    if value < lower: return(lower)
+    return value
 
 def main():
     import doctest

@@ -16,23 +16,28 @@ import argparse
 
 import matplotlib.pyplot as plt
 import morse_talk as mtalk
-import morse_talk.plotter
+import morse_talk.plotter as mplotter
+from morse_talk.utils import WORD
+from morse_talk.utils import display, _get_speed
 
 def main():
     parser = argparse.ArgumentParser(description='Send morse code')
-    parser.add_argument('--msg', help='Message', default='MORSE CODE')
-    parser.add_argument('--duration', help='Element duration', default=1)
+    parser.add_argument('-m', '--message', help='Message', default='SOS')
+    parser.add_argument('-d', '--duration', help='Element duration', default=None, type=float)
+    parser.add_argument('-s', '--speed', help="Speed in wpm (Words per minutes)", default=None, type=float)
+    parser.add_argument('-w', '--word-ref', help="Reference word", default=WORD)
     args = parser.parse_args()
-    message = args.msg
-    duration = float(args.duration)
-    #import datetime
-    #duration = datetime.timedelta(seconds=0.15) # ToFix
 
-    print(message)
-    print(mtalk.encode(message))
-    print(mtalk.encode(message, encoding_type='binary'))
+    message = args.message
+    element_duration = args.duration
+    wpm = args.speed
+    word_ref = args.word_ref
 
-    ax = plotter.plot(message, duration)
+    element_duration, wpm = _get_speed(element_duration, wpm)
+
+    display(message, wpm, element_duration, word_ref)
+
+    ax = mplotter.plot(message, element_duration)
     plt.show()
 
 if __name__ == '__main__':
