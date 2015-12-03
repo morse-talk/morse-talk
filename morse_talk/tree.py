@@ -98,6 +98,8 @@ class MorseBinaryTree(object):
         return self['-']
 
     def __getitem__(self, morse_code):
+        if len(morse_code) == 0:
+            return self
         if len(morse_code) == 1:
             tree = self._tree[morse_code]
             mt = MorseBinaryTree(tree=tree)

@@ -11,10 +11,8 @@ import sys
 import math
 import wave
 import struct
-import random
-import argparse
 from itertools import count, islice
-from morse_talk.utils import (FREQUENCY, WPM, FRAMERATE, AMPLITUDE, WORD)
+from morse_talk.utils import (FREQUENCY, WPM, FRAMERATE, AMPLITUDE, WORD, SECONDS_PER_DOT)
 from morse_talk.utils import (samples_nb, mlength, display, _get_speed,
         _seconds_per_dot, _limit_value)
 import morse_talk as mtalk
@@ -75,7 +73,7 @@ def sine_wave(i, frequency=FREQUENCY, framerate=FRAMERATE, amplitude=AMPLITUDE):
     return float(amplitude) * sine
 
 
-def generate_wave(message, wpm, framerate=FRAMERATE, word_spaced=False, skip_frame=0, amplitude=AMPLITUDE, frequency=FREQUENCY, word_ref=WORD):
+def generate_wave(message, wpm=WPM, framerate=FRAMERATE, word_spaced=False, skip_frame=0, amplitude=AMPLITUDE, frequency=FREQUENCY, word_ref=WORD):
     """
     Generate binary Morse code of message at a given code speed wpm and framerate
 
@@ -101,7 +99,7 @@ def generate_wave(message, wpm, framerate=FRAMERATE, word_spaced=False, skip_fra
         sine = sine_wave(i=i, frequency=frequency, framerate=framerate, amplitude=amplitude)
         yield sine * bit
 
-def morse_bin(i, lst_bin, wpm, framerate=FRAMERATE, default_value=0.0, seconds_per_dot=1.2):
+def morse_bin(i, lst_bin, wpm=WPM, framerate=FRAMERATE, default_value=0.0, seconds_per_dot=1.2):
     """
     Returns value of a morse bin list at a given framerate  and code speed (wpm)
     for a given sample i
@@ -111,7 +109,7 @@ def morse_bin(i, lst_bin, wpm, framerate=FRAMERATE, default_value=0.0, seconds_p
     except IndexError:
         return default_value   
 
-def calculate_wave(i, lst_bin, wpm, frequency, framerate, amplitude, seconds_per_dot):
+def calculate_wave(i, lst_bin, wpm=WPM, frequency=FREQUENCY, framerate=FRAMERATE, amplitude=AMPLITUDE, seconds_per_dot=SECONDS_PER_DOT):
     """
     Returns product of a sin wave and morse code (dit, dah, silent)
     """
@@ -120,18 +118,19 @@ def calculate_wave(i, lst_bin, wpm, frequency, framerate, amplitude, seconds_per
     sine = sine_wave(i=i, frequency=frequency, framerate=framerate, amplitude=amplitude)
     return bit * sine
 
-def preview_wave(message, wpm, samp_nb, frequency, framerate, amplitude, word_ref=WORD):
+def preview_wave(message, wpm=WPM, frequency=FREQUENCY, framerate=FRAMERATE, amplitude=AMPLITUDE, word_ref=WORD):
     """
     Listen (preview) wave
 
     sounddevice is required http://python-sounddevice.readthedocs.org/
     $ pip install sounddevice
     """
+    samp_nb = samples_nb(message=message, wpm=wpm, framerate=framerate, word_spaced=False)
     import sounddevice as sd
     omega = 2 * math.pi * frequency
     lst_bin = mtalk.encoding._encode_binary(message)
     amplitude = _limit_value(amplitude)
-    seconds_per_dot = 60 / mlength(word_ref) # 1.2
+    seconds_per_dot = _seconds_per_dot(word_ref)  # 1.2
     a = [calculate_wave(i, lst_bin, wpm, frequency, framerate, amplitude, seconds_per_dot)
         for i in range(samp_nb)]
     sd.play(a, framerate, blocking=True)

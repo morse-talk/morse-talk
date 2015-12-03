@@ -18,7 +18,8 @@ from morse_talk.utils import (FRAMERATE, AMPLITUDE, FREQUENCY, WORD)
 from morse_talk.utils import (_get_speed, display, samples_nb)
 
 from morse_talk.sound import (BITS, CHANNELS)
-from morse_talk.sound import (compute_samples, generate_wave, preview_wave)
+from morse_talk.sound import (preview_wave,
+                    compute_samples, generate_wave, write_wavefile)
 
 def main():
     parser = argparse.ArgumentParser(prog="msound", description='Create or listen morse code sound')
@@ -45,19 +46,21 @@ def main():
 
     display(message, wpm, element_duration, word_ref)
 
-    channels = ((generate_wave(message=message, wpm=wpm, framerate=framerate, word_spaced=False, skip_frame=0),) for i in range(args.channels))
-
-    # convert the channel functions into waveforms
-    samp_nb = samples_nb(message=message, wpm=wpm, framerate=framerate, word_spaced=False)
-    samples = compute_samples(channels, samp_nb)
-
     if args.filename == '': # preview
-        preview_wave(message, wpm, samp_nb, args.frequency, framerate, amplitude)
-    elif args.filename == '-': # write to console
-        filename = stdout
-        write_wavefile(filename, samples, samp_nb, args.channels, args.bits // 8, args.rate)
-    else: # write the samples to a .wav file
-        filename = args.filename
+        preview_wave(message, wpm, args.frequency, framerate, amplitude, word_ref)
+    else:
+        channels = ((generate_wave(message=message, wpm=wpm, framerate=framerate, word_spaced=False, skip_frame=0),) for i in range(args.channels))
+
+        # convert the channel functions into waveforms
+        samp_nb = samples_nb(message=message, wpm=wpm, framerate=framerate, word_spaced=False)
+        samples = compute_samples(channels, samp_nb)
+
+        if args.filename == '-': # write to console
+            filename = stdout
+            write_wavefile(filename, samples, samp_nb, args.channels, args.bits // 8, args.rate)
+        else: # write the samples to a .wav file
+            filename = args.filename
+
         write_wavefile(filename, samples, samp_nb, args.channels, args.bits // 8, args.rate)
 
 if __name__ == "__main__":

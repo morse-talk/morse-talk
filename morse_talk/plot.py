@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-A Morse Binary plotter
+A Morse Binary plot
 
 Copyright (C) 2015 by
 Sébastien Celles <s.celles@gmail.com>

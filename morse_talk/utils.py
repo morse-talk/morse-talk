@@ -221,6 +221,8 @@ def _limit_value(value, upper=1.0, lower=0.0):
     if value < lower: return(lower)
     return value
 
+SECONDS_PER_DOT = _seconds_per_dot(WORD)  # 1.2
+
 def main():
     import doctest
     doctest.testmod()
