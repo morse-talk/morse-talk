@@ -49,7 +49,7 @@ def main():
     if args.filename == '': # preview
         preview_wave(message, wpm, args.frequency, framerate, amplitude, word_ref)
     else:
-        channels = ((generate_wave(message=message, wpm=wpm, framerate=framerate, word_spaced=False, skip_frame=0),) for i in range(args.channels))
+        channels = ((generate_wave(message=message, wpm=wpm, framerate=framerate, skip_frame=0),) for i in range(args.channels))
 
         # convert the channel functions into waveforms
         samp_nb = samples_nb(message=message, wpm=wpm, framerate=framerate, word_spaced=False)

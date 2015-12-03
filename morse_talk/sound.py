@@ -73,7 +73,7 @@ def sine_wave(i, frequency=FREQUENCY, framerate=FRAMERATE, amplitude=AMPLITUDE):
     return float(amplitude) * sine
 
 
-def generate_wave(message, wpm=WPM, framerate=FRAMERATE, word_spaced=False, skip_frame=0, amplitude=AMPLITUDE, frequency=FREQUENCY, word_ref=WORD):
+def generate_wave(message, wpm=WPM, framerate=FRAMERATE, skip_frame=0, amplitude=AMPLITUDE, frequency=FREQUENCY, word_ref=WORD):
     """
     Generate binary Morse code of message at a given code speed wpm and framerate
 
