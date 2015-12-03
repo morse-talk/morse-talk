@@ -14,8 +14,9 @@ import struct
 import random
 import argparse
 from itertools import count, islice
-from utils import (FREQUENCY, WPM, FRAMERATE, AMPLITUDE, WORD)
-from utils import (samples_nb, mlength, display, _get_speed, _seconds_per_dot)
+from .utils import (FREQUENCY, WPM, FRAMERATE, AMPLITUDE, WORD)
+from .utils import (samples_nb, mlength, display, _get_speed,
+        _seconds_per_dot, _limit_value)
 import morse_talk as mtalk
 
 try:
@@ -126,8 +127,7 @@ def preview_wave(message, wpm, samp_nb, frequency, framerate, amplitude, word_re
     import sounddevice as sd
     omega = 2 * math.pi * frequency
     lst_bin = mtalk.encoding._encode_binary(message)
-    if amplitude > 1.0: amplitude = 1.0
-    if amplitude < 0.0: amplitude = 0.0
+    amplitude = _limit_value(amplitude)
     seconds_per_dot = 60 / mlength(word_ref) # 1.2
     a = [calculate_wave(i, lst_bin, wpm, frequency, framerate, amplitude, seconds_per_dot)
         for i in range(samp_nb)]

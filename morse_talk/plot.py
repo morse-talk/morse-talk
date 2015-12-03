@@ -17,8 +17,8 @@ import argparse
 import matplotlib.pyplot as plt
 import morse_talk as mtalk
 import morse_talk.plotter as mplotter
-from utils import WORD
-from utils import display, _get_speed
+from .utils import WORD
+from .utils import display, _get_speed
 
 def main():
     parser = argparse.ArgumentParser(description='Send morse code')

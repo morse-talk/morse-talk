@@ -163,14 +163,14 @@ def _get_speed(element_duration, wpm, word_ref=WORD):
         element duration when element_duration and/or code speed is given
         wpm    
 
-    >>> _get_element_duration(0.2, None)
-    0.2
+    >>> _get_speed(0.2, None)
+    (0.2, 5.999999999999999)
 
-    >>> _get_element_duration(None, 15)
-    0.08
+    >>> _get_speed(None, 15)
+    (0.08, 15)
 
-    >>> _get_element_duration(None, None)
-    1
+    >>> _get_speed(None, None)
+    (0.08, 15)
     """
     seconds_per_dot = _seconds_per_dot(word_ref)
     if element_duration is None and wpm is None:
@@ -203,6 +203,23 @@ def display(message, wpm, element_duration, word_ref):
     print("element_duration : %s" % element_duration)
     print("reference word : %r" % word_ref)
     print("")
+
+def _limit_value(value, upper=1.0, lower=0.0):
+    """
+    Returs value (such as amplitude) to upper and lower value
+    
+    >>> _limit_value(0.5)
+    0.5
+
+    >>> _limit_value(1.5)
+    1.0
+
+    >>> _limit_value(-1.5)
+    0.0
+    """
+    if value > upper: return(upper)
+    if value < lower: return(lower)
+    return value
 
 def main():
     import doctest
