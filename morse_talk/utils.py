@@ -19,7 +19,6 @@ FREQUENCY = 750  # default sound frequency
 AMPLITUDE = 0.5
 
 import morse_talk as mtalk
-import math
 
 def _repeat_word(word, N, word_space=" "):
     """
