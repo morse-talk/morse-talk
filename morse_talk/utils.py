@@ -176,13 +176,13 @@ def _get_speed(element_duration, wpm, word_ref=WORD):
         #element_duration = 1
         #wpm = seconds_per_dot / element_duration
         wpm = WPM
-        element_duration= wpm_to_duration(wpm, output='float', word=WORD) / 1000.0
+        element_duration= wpm_to_duration(wpm, output='float', word_ref=WORD) / 1000.0
         return element_duration, wpm
     elif element_duration is not None and wpm is None:
         wpm = seconds_per_dot / element_duration
         return element_duration, wpm
     elif element_duration is None and wpm is not None:
-        element_duration= wpm_to_duration(wpm, output='float', word=WORD) / 1000.0
+        element_duration= wpm_to_duration(wpm, output='float', word_ref=WORD) / 1000.0
         return element_duration, wpm
     else:
         raise NotImplementedError("Can't set both element_duration and wpm")
