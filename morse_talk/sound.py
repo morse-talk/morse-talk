@@ -14,10 +14,13 @@ import struct
 import random
 import argparse
 from itertools import count, islice
-from .utils import (FREQUENCY, WPM, FRAMERATE, AMPLITUDE, WORD)
-from .utils import (samples_nb, mlength, display, _get_speed,
+from morse_talk.utils import (FREQUENCY, WPM, FRAMERATE, AMPLITUDE, WORD)
+from morse_talk.utils import (samples_nb, mlength, display, _get_speed,
         _seconds_per_dot, _limit_value)
 import morse_talk as mtalk
+
+BITS = 16
+CHANNELS = 2
 
 try:
     from itertools import zip_longest
@@ -134,9 +137,9 @@ def preview_wave(message, wpm, samp_nb, frequency, framerate, amplitude, word_re
     sd.play(a, framerate, blocking=True)
 
 def main():
-    parser = argparse.ArgumentParser(prog="wavebender")
-    parser.add_argument('-c', '--channels', help="Number of channels to produce", default=2, type=int)
-    parser.add_argument('-b', '--bits', help="Number of bits in each sample", choices=(16,), default=16, type=int)
+    parser = argparse.ArgumentParser(prog="sound")
+    parser.add_argument('-c', '--channels', help="Number of channels to produce", default=CHANNELS, type=int)
+    parser.add_argument('-b', '--bits', help="Number of bits in each sample", choices=(BITS,), default=BITS, type=int)
     parser.add_argument('-r', '--rate', help="Sample rate in Hz", default=FRAMERATE, type=int)
     parser.add_argument('-a', '--amplitude', help="Amplitude of the wave on a scale of 0.0-1.0.", default=AMPLITUDE, type=float)
     parser.add_argument('-f', '--frequency', help="Frequency of the wave in Hz", default=FREQUENCY, type=float)
