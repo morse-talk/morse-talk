@@ -98,6 +98,8 @@ class MorseBinaryTree(object):
         return self['-']
 
     def __getitem__(self, morse_code):
+        if len(morse_code) == 0:
+            return self
         if len(morse_code) == 1:
             tree = self._tree[morse_code]
             mt = MorseBinaryTree(tree=tree)
@@ -108,18 +110,8 @@ class MorseBinaryTree(object):
             return mt
 
 def main():
-    import argparse
-
-    parser = argparse.ArgumentParser(description='Display morse binary tree')
-    parser.add_argument('--c', help='Morse code character', default='')
-    args = parser.parse_args()
-    c = args.c.strip()
-
-    mt = MorseBinaryTree()
-    if c == '':
-        print(mt)
-    else:
-        print(mt[c])
+    import doctest
+    doctest.testmod()
 
 if __name__ == '__main__':
     main()

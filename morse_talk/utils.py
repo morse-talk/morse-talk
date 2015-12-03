@@ -19,8 +19,6 @@ FREQUENCY = 750  # default sound frequency
 AMPLITUDE = 0.5
 
 import morse_talk as mtalk
-from itertools import count
-import math
 
 def _repeat_word(word, N, word_space=" "):
     """
@@ -57,7 +55,7 @@ def mlength(message, N=1, word_spaced=True):
         N -= 1 # E is one "dit" so we remove it
     return N
 
-def wpm_to_duration(wpm, output='timedelta', word=WORD):
+def wpm_to_duration(wpm, output='timedelta', word_ref=WORD):
     """
     Convert from WPM (word per minutes) to 
     element duration
@@ -69,7 +67,7 @@ def wpm_to_duration(wpm, output='timedelta', word=WORD):
         'timedelta'
         'float'
         'decimal'
-    word : string - reference word (PARIS by default)
+    word_ref : string - reference word (PARIS by default)
 
     Returns
     -------
@@ -93,7 +91,7 @@ def wpm_to_duration(wpm, output='timedelta', word=WORD):
     >>> wpm_to_duration(5.01, output='timedelta')
     datetime.timedelta(0, 0, 239521)
     """
-    N = mlength(word) * wpm
+    N = mlength(word_ref) * wpm
     output = output.lower()
     allowed_output = ['decimal', 'float', 'timedelta']
     if output == 'decimal':
@@ -137,7 +135,7 @@ def duration(message, wpm, output='timedelta', word_ref=WORD, word_spaced=False)
     >>> duration('SOS', 15)
     datetime.timedelta(0, 2, 160000)
     """
-    elt_duration = wpm_to_duration(wpm, output=output)
+    elt_duration = wpm_to_duration(wpm, output=output, word_ref=word_ref)
     word_length = mlength(message, word_spaced=word_spaced)
     return word_length * elt_duration
 
@@ -177,13 +175,13 @@ def _get_speed(element_duration, wpm, word_ref=WORD):
         #element_duration = 1
         #wpm = seconds_per_dot / element_duration
         wpm = WPM
-        element_duration= wpm_to_duration(wpm, output='float', word=WORD) / 1000.0
+        element_duration= wpm_to_duration(wpm, output='float', word_ref=WORD) / 1000.0
         return element_duration, wpm
     elif element_duration is not None and wpm is None:
         wpm = seconds_per_dot / element_duration
         return element_duration, wpm
     elif element_duration is None and wpm is not None:
-        element_duration= wpm_to_duration(wpm, output='float', word=WORD) / 1000.0
+        element_duration= wpm_to_duration(wpm, output='float', word_ref=WORD) / 1000.0
         return element_duration, wpm
     else:
         raise NotImplementedError("Can't set both element_duration and wpm")
@@ -220,6 +218,8 @@ def _limit_value(value, upper=1.0, lower=0.0):
     if value > upper: return(upper)
     if value < lower: return(lower)
     return value
+
+SECONDS_PER_DOT = _seconds_per_dot(WORD)  # 1.2
 
 def main():
     import doctest
