@@ -13,8 +13,8 @@ import wave
 import struct
 from itertools import count, islice
 from morse_talk.utils import (FREQUENCY, WPM, FRAMERATE, AMPLITUDE, WORD, SECONDS_PER_DOT)
-from morse_talk.utils import (samples_nb, display, _get_speed,
-        _seconds_per_dot, _limit_value)
+from morse_talk.utils import (samples_nb, display,
+                            _seconds_per_dot, _limit_value)
 import morse_talk as mtalk
 
 BITS = 16
