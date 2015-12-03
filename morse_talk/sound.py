@@ -137,44 +137,8 @@ def preview_wave(message, wpm, samp_nb, frequency, framerate, amplitude, word_re
     sd.play(a, framerate, blocking=True)
 
 def main():
-    parser = argparse.ArgumentParser(prog="sound")
-    parser.add_argument('-c', '--channels', help="Number of channels to produce", default=CHANNELS, type=int)
-    parser.add_argument('-b', '--bits', help="Number of bits in each sample", choices=(BITS,), default=BITS, type=int)
-    parser.add_argument('-r', '--rate', help="Sample rate in Hz", default=FRAMERATE, type=int)
-    parser.add_argument('-a', '--amplitude', help="Amplitude of the wave on a scale of 0.0-1.0.", default=AMPLITUDE, type=float)
-    parser.add_argument('-f', '--frequency', help="Frequency of the wave in Hz", default=FREQUENCY, type=float)
-    parser.add_argument('-o', '--filename', help="The file to generate.", default='')
-    parser.add_argument('-m', '--message', help='Message', default='SOS')
-    parser.add_argument('-d', '--duration', help='Element duration', default=None, type=float)
-    parser.add_argument('-s', '--speed', help="Speed in wpm (Words per minutes)", default=None, type=float)
-    parser.add_argument('-w', '--word-ref', help="Reference word", default=WORD)
-    args = parser.parse_args()
+    import doctest
+    doctest.testmod()
 
-    message = args.message
-    element_duration = args.duration
-    wpm = args.speed
-    framerate = args.rate
-    amplitude = args.amplitude
-    word_ref = args.word_ref
-
-    element_duration, wpm = _get_speed(element_duration, wpm)
-
-    display(message, wpm, element_duration, word_ref)
-
-    channels = ((generate_wave(message=message, wpm=wpm, framerate=framerate, word_spaced=False, skip_frame=0),) for i in range(args.channels))
-
-    # convert the channel functions into waveforms
-    samp_nb = samples_nb(message=message, wpm=wpm, framerate=framerate, word_spaced=False)
-    samples = compute_samples(channels, samp_nb)
-    
-    if args.filename == '': # preview
-        preview_wave(message, wpm, samp_nb, args.frequency, framerate, amplitude)
-    elif args.filename == '-': # write to console
-        filename = stdout
-        write_wavefile(filename, samples, samp_nb, args.channels, args.bits // 8, args.rate)
-    else: # write the samples to a .wav file
-        filename = args.filename
-        write_wavefile(filename, samples, samp_nb, args.channels, args.bits // 8, args.rate)
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

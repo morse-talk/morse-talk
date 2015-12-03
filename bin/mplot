@@ -9,7 +9,7 @@ Sébastien Celles <s.celles@gmail.com>
 All rights reserved.
 
 Usage:
-$ python plot.py --msg "MORSE CODE"
+$ mplot -m "MORSE CODE"
 """
 
 import argparse
@@ -21,7 +21,7 @@ from morse_talk.utils import WORD
 from morse_talk.utils import display, _get_speed
 
 def main():
-    parser = argparse.ArgumentParser(description='Send morse code')
+    parser = argparse.ArgumentParser(prog="mplot", description='Plot morse code')
     parser.add_argument('-m', '--message', help='Message', default='SOS')
     parser.add_argument('-d', '--duration', help='Element duration', default=None, type=float)
     parser.add_argument('-s', '--speed', help="Speed in wpm (Words per minutes)", default=None, type=float)
