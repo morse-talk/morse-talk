@@ -150,51 +150,59 @@ def samples_nb(message, wpm, framerate=FRAMERATE, word_spaced=False):
     """
     return int(duration(message, wpm, output='float', word_spaced=word_spaced) / 1000.0 * framerate)
 
-def sine_wave(i, frequency=FREQUENCY, framerate=FRAMERATE, amplitude=AMPLITUDE):
+def _seconds_per_dot(word_ref=WORD):
     """
-    Returns value of a sine wave at a given frequency and framerate
-    for a given sample i
+    >>> _seconds_per_dot('PARIS')
+    1.2
     """
-    if amplitude > 1.0: amplitude = 1.0
-    if amplitude < 0.0: amplitude = 0.0
-    sine = math.sin(2.0 * math.pi * float(frequency) * (float(i) / float(framerate)))
-    return float(amplitude) * sine
+    return 60 / mlength(word_ref) # 1.2 with 'PARIS'
 
-def morse_bin(i, lst_bin, wpm, framerate=FRAMERATE, default_value=0.0, seconds_per_dot=1.2):
+def _get_speed(element_duration, wpm, word_ref=WORD):
     """
-    Returns value of a morse bin list at a given framerate  and code speed (wpm)
-    for a given sample i
-    """
-    try:
-        return lst_bin[int(float(wpm) * float(i) / (seconds_per_dot * float(framerate)))]
-    except IndexError:
-        return default_value   
-
-def generate_bin(message, wpm, framerate=FRAMERATE, word_spaced=False, skip_frame=0, amplitude=1.0, frequency=FREQUENCY, word_ref=WORD):
-    """
-    Generate binary Morse code of message at a given code speed wpm and framerate
-
-    Parameters
-    ----------
-    word : string
-    wpm : int or float - word per minute
-    framerate : nb of samples / seconds
-    word_spaced : bool - calculate with spaces between 2 words (default is False)
-    skip_frame : int - nb of frame to skip
-
     Returns
-    -------
-    value : float
+        element duration when element_duration and/or code speed is given
+        wpm    
 
+    >>> _get_element_duration(0.2, None)
+    0.2
+
+    >>> _get_element_duration(None, 15)
+    0.08
+
+    >>> _get_element_duration(None, None)
+    1
     """
-    lst_bin = mtalk.encoding._encode_binary(message)
-    if amplitude > 1.0: amplitude = 1.0
-    if amplitude < 0.0: amplitude = 0.0
-    seconds_per_dot = 60 / mlength(word_ref) # 1.2
-    for i in count(skip_frame):
-        bit = morse_bin(i=i, lst_bin=lst_bin, wpm=wpm, framerate=framerate, default_value=0.0, seconds_per_dot=seconds_per_dot)
-        sine = sine_wave(i=i, frequency=frequency, framerate=framerate, amplitude=amplitude)
-        yield sine * bit
+    seconds_per_dot = _seconds_per_dot(word_ref)
+    if element_duration is None and wpm is None:
+        #element_duration = 1
+        #wpm = seconds_per_dot / element_duration
+        wpm = WPM
+        element_duration= wpm_to_duration(wpm, output='float', word=WORD) / 1000.0
+        return element_duration, wpm
+    elif element_duration is not None and wpm is None:
+        wpm = seconds_per_dot / element_duration
+        return element_duration, wpm
+    elif element_duration is None and wpm is not None:
+        element_duration= wpm_to_duration(wpm, output='float', word=WORD) / 1000.0
+        return element_duration, wpm
+    else:
+        raise NotImplementedError("Can't set both element_duration and wpm")
+
+def display(message, wpm, element_duration, word_ref):
+    """
+    Display 
+        text message
+        morse code
+        binary morse code
+    """
+    print("text : %r" % message)
+    print("morse: %s" % mtalk.encode(message))
+    print("bin  : %s" % mtalk.encode(message, encoding_type='binary'))
+    print("")
+    print("code speed : %s wpm" % wpm)
+    print("element_duration : %s" % element_duration)
+    print("reference word : %r" % word_ref)
+    print("")
 
 def main():
     import doctest
