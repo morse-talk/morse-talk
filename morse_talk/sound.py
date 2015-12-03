@@ -23,8 +23,8 @@ CHANNELS = 2
 try:
     from itertools import zip_longest
 except ImportError:
-    from itertools import imap as map
-    from itertools import izip as zip
+    from itertools import imap
+    from itertools import izip
     from itertools import izip_longest as zip_longest
 
 try:
@@ -43,7 +43,7 @@ def compute_samples(channels, nsamples=None):
     essentially it creates a sequence of the sum of each function in the channel
     at each sample in the file for each channel.
     '''
-    return islice(zip(*(map(sum, zip(*channel)) for channel in channels)), nsamples)
+    return islice(izip(*(imap(sum, izip(*channel)) for channel in channels)), nsamples)
 
 def write_wavefile(f, samples, nframes=None, nchannels=2, sampwidth=2, framerate=44100, bufsize=2048):
     "Write samples to a wavefile."
