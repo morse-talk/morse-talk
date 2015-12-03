@@ -23,6 +23,7 @@ setup(
     packages=[
         'morse_talk'
     ],
+    install_requires=['sounddevice'],
     scripts=['bin/mplot', 'bin/msound', 'bin/mtree'],
     test_suite='nose.collector',
     tests_require=['nose>=0.10.1']
