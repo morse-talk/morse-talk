@@ -8,12 +8,12 @@ Some ideas was taken from
 https://github.com/zacharydenton/wavebender/blob/master/wavebender/
 """
 import sys
-import math
+from math import pi, sin
 import wave
 import struct
 from itertools import count, islice
 from morse_talk.utils import (FREQUENCY, WPM, FRAMERATE, AMPLITUDE, WORD, SECONDS_PER_DOT)
-from morse_talk.utils import (samples_nb, mlength, display, _get_speed,
+from morse_talk.utils import (samples_nb, display, _get_speed,
         _seconds_per_dot, _limit_value)
 import morse_talk as mtalk
 
@@ -67,9 +67,8 @@ def sine_wave(i, frequency=FREQUENCY, framerate=FRAMERATE, amplitude=AMPLITUDE):
     Returns value of a sine wave at a given frequency and framerate
     for a given sample i
     """
-    #if amplitude > 1.0: amplitude = 1.0
-    #if amplitude < 0.0: amplitude = 0.0
-    sine = math.sin(2.0 * math.pi * float(frequency) * (float(i) / float(framerate)))
+    omega = 2.0 * pi * float(frequency)
+    sine = sin(omega * (float(i) / float(framerate)))
     return float(amplitude) * sine
 
 
@@ -127,7 +126,6 @@ def preview_wave(message, wpm=WPM, frequency=FREQUENCY, framerate=FRAMERATE, amp
     """
     samp_nb = samples_nb(message=message, wpm=wpm, framerate=framerate, word_spaced=False)
     import sounddevice as sd
-    omega = 2 * math.pi * frequency
     lst_bin = mtalk.encoding._encode_binary(message)
     amplitude = _limit_value(amplitude)
     seconds_per_dot = _seconds_per_dot(word_ref)  # 1.2
