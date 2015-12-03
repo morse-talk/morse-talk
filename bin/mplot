@@ -38,7 +38,7 @@ def main():
 
     display(message, wpm, element_duration, word_ref)
 
-    ax = mplot.plot(message, element_duration)
+    _ = mplot.plot(message, element_duration)
     plt.show()
 
 if __name__ == '__main__':

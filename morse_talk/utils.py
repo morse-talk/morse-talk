@@ -19,7 +19,6 @@ FREQUENCY = 750  # default sound frequency
 AMPLITUDE = 0.5
 
 import morse_talk as mtalk
-from itertools import count
 import math
 
 def _repeat_word(word, N, word_space=" "):
@@ -57,7 +56,7 @@ def mlength(message, N=1, word_spaced=True):
         N -= 1 # E is one "dit" so we remove it
     return N
 
-def wpm_to_duration(wpm, output='timedelta', word=WORD):
+def wpm_to_duration(wpm, output='timedelta', word_ref=WORD):
     """
     Convert from WPM (word per minutes) to 
     element duration
@@ -69,7 +68,7 @@ def wpm_to_duration(wpm, output='timedelta', word=WORD):
         'timedelta'
         'float'
         'decimal'
-    word : string - reference word (PARIS by default)
+    word_ref : string - reference word (PARIS by default)
 
     Returns
     -------
@@ -93,7 +92,7 @@ def wpm_to_duration(wpm, output='timedelta', word=WORD):
     >>> wpm_to_duration(5.01, output='timedelta')
     datetime.timedelta(0, 0, 239521)
     """
-    N = mlength(word) * wpm
+    N = mlength(word_ref) * wpm
     output = output.lower()
     allowed_output = ['decimal', 'float', 'timedelta']
     if output == 'decimal':
@@ -137,7 +136,7 @@ def duration(message, wpm, output='timedelta', word_ref=WORD, word_spaced=False)
     >>> duration('SOS', 15)
     datetime.timedelta(0, 2, 160000)
     """
-    elt_duration = wpm_to_duration(wpm, output=output)
+    elt_duration = wpm_to_duration(wpm, output=output, word_ref=word_ref)
     word_length = mlength(message, word_spaced=word_spaced)
     return word_length * elt_duration
 

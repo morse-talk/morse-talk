@@ -20,7 +20,7 @@ def _create_ax(ax):
     else ax is returned
     """
     if ax is None:
-        fig, axs = plt.subplots(1, 1)
+        _, axs = plt.subplots(1, 1)
         return axs
     else:
         return ax
