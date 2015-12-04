@@ -50,7 +50,8 @@ def main():
     if args.filename == '': # preview
         preview_wave(message, wpm, args.frequency, framerate, amplitude, word_ref)
         while(args.loop):
-            preview_wave(" " + message, wpm, args.frequency, framerate, amplitude, word_ref)
+            message_with_space = " " + message
+            preview_wave(message_with_space, wpm, args.frequency, framerate, amplitude, word_ref)
     else:
         channels = ((generate_wave(message=message, wpm=wpm, framerate=framerate, skip_frame=0),) for i in range(args.channels))
 
