@@ -214,10 +214,10 @@ def display(message, wpm, element_duration, word_ref, strip=False):
         print("text : %r" % message.strip())
     else:
         print("text : %r" % message)
-    print("morse: %s" % mtalk.encode(message, strip=strip))
-    print("bin  : %s" % mtalk.encode(message, encoding_type='binary', strip=strip))
+    print("morse: %r" % mtalk.encode(message, strip=strip))
+    print("bin  : %r" % mtalk.encode(message, encoding_type='binary', strip=strip))
     print("")
-    s = "".join(mtalk.encoding._encode_binary(message, on="=", off="."))
+    s = mtalk.encoding._encode_to_binary_string(message, on="=", off=".")
     N = len(s)
     print(_numbers_decades(N))
     print(_numbers_units(N))

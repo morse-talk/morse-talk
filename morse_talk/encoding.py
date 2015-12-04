@@ -109,19 +109,18 @@ def _encode_binary(message, on=1, off=0):
 def _encode_to_binary_string(message, on, off):
     """
     >>> message = "SOS"
-    >>> _encode_to_binary_string(message, on=1, off=1)
+    >>> _encode_to_binary_string(message, on='1', off='0')
     '101010001110111011100010101'
 
     >>> message = " SOS"
-    >>> _encode_to_binary_string(message, on=1, off=1)
+    >>> _encode_to_binary_string(message, on='1', off='0')
     '0000000101010001110111011100010101'
     """
-    on_str, off_str = '1', '0'
     def to_string(i, s):
-        if i == 0 and s == off_str:
-            return off_str * 4
+        if i == 0 and s == off:
+            return off * 4
         return s
-    return ''.join(to_string(i, s) for i, s in enumerate(_encode_binary(message, on=on_str, off=off_str)))
+    return ''.join(to_string(i, s) for i, s in enumerate(_encode_binary(message, on=on, off=off)))
 
 def encode(message, encoding_type='default', letter_sep = ' '*3, strip=True):
     """Converts a string of message into morse
