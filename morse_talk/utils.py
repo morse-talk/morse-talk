@@ -19,6 +19,7 @@ FREQUENCY = 750  # default sound frequency
 AMPLITUDE = 0.5
 
 import morse_talk as mtalk
+from morse_talk.encoding import (_split_message, _encode_binary, _encode_to_binary_string)
 
 def _repeat_word(word, N, word_space=" "):
     """
@@ -49,7 +50,7 @@ def mlength(message, N=1, word_spaced=True):
     message = _repeat_word(message, N)
     if word_spaced:
         message = message + " E"
-    lst_bin = mtalk.encoding._encode_binary(message)
+    lst_bin = _encode_binary(message)
     N = len(lst_bin)
     if word_spaced:
         N -= 1 # E is one "dit" so we remove it
@@ -250,7 +251,7 @@ def _timing_representation(message):
     M   O   R   S  E          C    O   D  E
     -- --- .-. ... . (space) -.-. --- -.. .
     """
-    s = mtalk.encoding._encode_to_binary_string(message, on="=", off=".")
+    s = _encode_to_binary_string(message, on="=", off=".")
     N = len(s)
     s += '\n' + _numbers_decades(N)
     s += '\n' + _numbers_units(N)
@@ -268,7 +269,7 @@ def _timing_char(message):
     inter_symb = ' '
     inter_char = ' ' * 3
     inter_word = inter_symb * 7
-    for i, word in enumerate(mtalk.encoding._split_message(message)):
+    for i, word in enumerate(_split_message(message)):
         if i >= 1:
             s += inter_word
         for j, c in enumerate(word):
@@ -343,7 +344,7 @@ def _spoken_representation(message):
              M   O   R   S  E          C    O   D  E
      (space) -- --- .-. ... . (space) -.-. --- -.. .
     """
-    lst_lst_char = mtalk.encoding._split_message(message)
+    lst_lst_char = _split_message(message)
     s = _spoken_representation_L1(lst_lst_char)
     s += '\n' + _spoken_representation_L2(lst_lst_char)
     return s

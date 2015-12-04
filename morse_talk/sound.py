@@ -14,7 +14,7 @@ import struct
 from itertools import count, islice
 from morse_talk.utils import (FREQUENCY, WPM, FRAMERATE, AMPLITUDE, WORD, SECONDS_PER_DOT)
 from morse_talk.utils import (samples_nb, _seconds_per_dot, _limit_value)
-import morse_talk as mtalk
+from morse_talk.encoding import _encode_binary
 
 BITS = 16
 CHANNELS = 2
@@ -88,7 +88,7 @@ def generate_wave(message, wpm=WPM, framerate=FRAMERATE, skip_frame=0, amplitude
     value : float
 
     """
-    lst_bin = mtalk.encoding._encode_binary(message)
+    lst_bin = _encode_binary(message)
     if amplitude > 1.0: amplitude = 1.0
     if amplitude < 0.0: amplitude = 0.0
     seconds_per_dot = _seconds_per_dot(word_ref) # =1.2
@@ -125,7 +125,7 @@ def preview_wave(message, wpm=WPM, frequency=FREQUENCY, framerate=FRAMERATE, amp
     """
     samp_nb = samples_nb(message=message, wpm=wpm, framerate=framerate, word_spaced=False)
     import sounddevice as sd
-    lst_bin = mtalk.encoding._encode_binary(message)
+    lst_bin = _encode_binary(message)
     amplitude = _limit_value(amplitude)
     seconds_per_dot = _seconds_per_dot(word_ref)  # 1.2
     a = [calculate_wave(i, lst_bin, wpm, frequency, framerate, amplitude, seconds_per_dot)
