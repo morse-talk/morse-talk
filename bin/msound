@@ -33,6 +33,7 @@ def main():
     parser.add_argument('-d', '--duration', help='Element duration', default=None, type=float)
     parser.add_argument('-s', '--speed', help="Speed in wpm (Words per minutes)", default=None, type=float)
     parser.add_argument('-w', '--word-ref', help="Reference word", default=WORD)
+    parser.add_argument('-l', '--loop', dest='loop', action='store_true')
     args = parser.parse_args()
 
     message = args.message
@@ -48,6 +49,8 @@ def main():
 
     if args.filename == '': # preview
         preview_wave(message, wpm, args.frequency, framerate, amplitude, word_ref)
+        while(args.loop):
+            preview_wave(" " + message, wpm, args.frequency, framerate, amplitude, word_ref)
     else:
         channels = ((generate_wave(message=message, wpm=wpm, framerate=framerate, skip_frame=0),) for i in range(args.channels))
 
