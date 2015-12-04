@@ -68,6 +68,9 @@ def _encode_morse(message):
     >>> _encode_morse(message)
     ['...', '---', '...']
 
+    >>> _encode_morse(" " + message)
+    [' ', '...', '---', '...']
+
     >>> message = "   SOS"
     >>> _encode_morse(message)
     [' ', ' ', ' ', '...', '---', '...']
@@ -111,6 +114,12 @@ def encode(message, encoding_type='default', letter_sep = ' '*3, strip=True):
     >>> message = "SOS"
     >>> encode(message)
     '...   ---   ...'
+
+    >>> message = " SOS"
+    >>> encode(message, strip=False)
+    '    ...   ---   ...'
+
+    # ToFix: it should be '     ...   ---   ...'
 
     Parameters
     ----------
