@@ -67,6 +67,11 @@ def _encode_morse(message):
     >>> message = "SOS"
     >>> _encode_morse(message)
     ['...', '---', '...']
+
+    >>> message = "   SOS"
+    >>> _encode_morse(message)
+    [' ', ' ', ' ', '...', '---', '...']
+
     """
     return [morsetab.get(c.upper(), '?') for c in message]
 

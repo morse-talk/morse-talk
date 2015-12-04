@@ -186,16 +186,43 @@ def _get_speed(element_duration, wpm, word_ref=WORD):
     else:
         raise NotImplementedError("Can't set both element_duration and wpm")
 
-def display(message, wpm, element_duration, word_ref):
+def _numbers_units(N):
+    """
+    >>> _numbers_units(45)
+    '123456789012345678901234567890123456789012345'
+    """
+    lst = range(1, N + 1)
+    return "".join(list(map(lambda i: str(i % 10), lst)))
+
+def _numbers_decades(N):
+    """
+    >>> _numbers_decades(45)
+    """
+    N = N // 10
+    lst = range(1, N + 1)
+    return "".join(map(lambda i: "%10s" % i, lst))
+
+def display(message, wpm, element_duration, word_ref, strip=False):
     """
     Display 
         text message
         morse code
         binary morse code
     """
-    print("text : %r" % message)
-    print("morse: %s" % mtalk.encode(message))
-    print("bin  : %s" % mtalk.encode(message, encoding_type='binary'))
+    if strip:
+        print("text : %r" % message.strip())
+    else:
+        print("text : %r" % message)
+    print("morse: %s" % mtalk.encode(message, strip=strip))
+    print("bin  : %s" % mtalk.encode(message, encoding_type='binary', strip=strip))
+    print("")
+    s = "".join(mtalk.encoding._encode_binary(message, on="=", off="."))
+    N = len(s)
+    print(_numbers_decades(N))
+    print(_numbers_units(N))
+    print("")
+    print(s)
+
     print("")
     print("code speed : %s wpm" % wpm)
     print("element_duration : %s" % element_duration)
