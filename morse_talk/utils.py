@@ -236,6 +236,28 @@ def _char_to_string_binary(c, align=ALIGN.LEFT, padding='-'):
     s = "{0:" + padding + s_align + str(N) + "}"
     return s.format(c)
 
+def _timing_representation(message):
+    """
+    Returns timing representation of a message like
+
+             1         2         3         4         5         6         7         8
+    12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+
+    M------   O----------   R------   S----   E       C----------   O----------   D------   E
+    ===.===...===.===.===...=.===.=...=.=.=...=.......===.=.===.=...===.===.===...===.=.=...=
+
+    spoken reprentation:
+    M   O   R   S  E          C    O   D  E
+    -- --- .-. ... . (space) -.-. --- -.. .
+    """
+    s = mtalk.encoding._encode_to_binary_string(message, on="=", off=".")
+    N = len(s)
+    s += '\n' + _numbers_decades(N)
+    s += '\n' + _numbers_units(N)
+    s += '\n'
+    s += '\n' + _timing_char(message)
+    return s
+
 def _timing_char(message):
     """
     >>> message = 'MORSE CODE'
@@ -296,6 +318,11 @@ def _spoken_representation_L1(lst_lst_char):
     return s
 
 def _spoken_representation_L2(lst_lst_char):
+    """
+    >>> lst = [['M', 'O', 'R', 'S', 'E'], ['C', 'O', 'D', 'E']]
+    >>> _spoken_representation_L2(lst)
+    '-- --- .-. ... . (space) -.-. --- -.. .'
+    """
     s = ''
     inter_char = ' '
     inter_word = ' (space) '
@@ -309,6 +336,13 @@ def _spoken_representation_L2(lst_lst_char):
     return s
 
 def _spoken_representation(message):
+    """
+    Returns 2 lines of spoken representation of a message
+    like:
+
+             M   O   R   S  E          C    O   D  E
+     (space) -- --- .-. ... . (space) -.-. --- -.. .
+    """
     inter_char = ' '
     inter_word = inter_char * 9
     lst_lst_char = mtalk.encoding._split_message(message)
@@ -333,13 +367,7 @@ def display(message, wpm, element_duration, word_ref, strip=False):
     print(fmt.format("bin", mtalk.encode(message, encoding_type='binary', strip=strip)))
     print("")
     print("{0:>8s}:".format("timing"))
-    s = mtalk.encoding._encode_to_binary_string(message, on="=", off=".")
-    N = len(s)
-    print(_numbers_decades(N))
-    print(_numbers_units(N))
-    print("")
-    print(_timing_char(message))
-    print(s)
+    print(_timing_representation(message))
     print("")
     print("{0:>8s}:".format("spoken reprentation"))
     print(_spoken_representation(message))
