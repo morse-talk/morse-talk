@@ -203,6 +203,119 @@ def _numbers_decades(N):
     lst = range(1, N + 1)
     return "".join(map(lambda i: "%10s" % i, lst))
 
+from enum import Enum
+class ALIGN(Enum):
+    """
+    An Enum class for text alignement
+    """
+    LEFT = 0
+    CENTER = 1
+    RIGHT = 2
+
+def _char_to_string_binary(c, align=ALIGN.LEFT, padding='-'):
+    """
+    >>> _char_to_string_binary('O', align=ALIGN.LEFT)
+    'O----------'
+
+    >>> _char_to_string_binary('O', align=ALIGN.RIGHT)
+    '----------O'
+
+    >>> _char_to_string_binary('O', align=ALIGN.CENTER)
+    '-----O-----'
+    """
+    bin = mtalk.encode(c, encoding_type='binary', letter_sep=' ')
+    N = len(bin)
+    if align == ALIGN.LEFT:
+        s_align = "<"
+    elif align == ALIGN.RIGHT:
+        s_align = ">"
+    elif align == ALIGN.CENTER:
+        s_align = "^"
+    else:
+        raise NotImplementedError("align '%s' not allowed" % align)
+    s = "{0:" + padding + s_align + str(N) + "}"
+    return s.format(c)
+
+def _timing_char(message):
+    """
+    >>> message = 'MORSE CODE'
+    >>> _timing_char(message)
+    'M------   O----------   R------   S----   E       C----------   O----------   D------   E'
+    """
+    s = ''
+    inter_symb = ' '
+    inter_char = ' ' * 3
+    inter_word = inter_symb * 7
+    for i, word in enumerate(mtalk.encoding._split_message(message)):
+        if i >= 1:
+            s += inter_word
+        for j, c in enumerate(word):
+            if j != 0:
+                s += inter_char
+            s += _char_to_string_binary(c, align=ALIGN.LEFT)
+    return s
+
+def _char_to_string_morse(c, align=ALIGN.CENTER, padding=' '):
+    """
+    >>> _char_to_string_morse('O')
+    ' O '
+    """
+    bin = mtalk.encode(c, encoding_type='default', letter_sep=' ')
+    N = len(bin)
+    if align == ALIGN.LEFT:
+        s_align = "<"
+    elif align == ALIGN.RIGHT:
+        s_align = ">"
+    elif align == ALIGN.CENTER:
+        s_align = "^"
+    else:
+        raise NotImplementedError("align '%s' not allowed" % align)
+    s = "{0:" + padding + s_align + str(N) + "}"
+    return s.format(c)
+
+def _spoken_representation_L1(lst_lst_char):
+    """
+    >>> lst = [['M', 'O', 'R', 'S', 'E'], ['C', 'O', 'D', 'E']]
+    >>> _spoken_representation_L1(lst)
+    'M   O   R   S  E          C    O   D  E'
+
+    >>> lst = [[], ['M', 'O', 'R', 'S', 'E'], ['C', 'O', 'D', 'E']]
+    >>> _spoken_representation_L1(lst)
+    '         M   O   R   S  E          C    O   D  E'
+    """
+    s = ''
+    inter_char = ' '
+    inter_word = inter_char * 9
+    for i, word in enumerate(lst_lst_char):
+        if i >= 1:
+            s += inter_word
+        for j, c in enumerate(word):
+            if j != 0:
+                s += inter_char
+            s += _char_to_string_morse(c)
+    return s
+
+def _spoken_representation_L2(lst_lst_char):
+    s = ''
+    inter_char = ' '
+    inter_word = ' (space) '
+    for i, word in enumerate(lst_lst_char):
+        if i >= 1:
+            s += inter_word
+        for j, c in enumerate(word):
+            if j != 0:
+                s += inter_char
+            s += mtalk.encoding.morsetab[c]
+    return s
+
+def _spoken_representation(message):
+    inter_char = ' '
+    inter_word = inter_char * 9
+    lst_lst_char = mtalk.encoding._split_message(message)
+    s = _spoken_representation_L1(lst_lst_char)
+    s += '\n' + _spoken_representation_L2(lst_lst_char)
+    return s
+
 def display(message, wpm, element_duration, word_ref, strip=False):
     """
     Display 
@@ -210,20 +323,26 @@ def display(message, wpm, element_duration, word_ref, strip=False):
         morse code
         binary morse code
     """
+    fmt = "{0:>8s}: '{1}'"
+    key = "text"
     if strip:
-        print("text : %r" % message.strip())
+        print(fmt.format(key, message.strip()))
     else:
-        print("text : %r" % message)
-    print("morse: %r" % mtalk.encode(message, strip=strip))
-    print("bin  : %r" % mtalk.encode(message, encoding_type='binary', strip=strip))
+        print(fmt.format(key, message.strip()))
+    print(fmt.format("morse", mtalk.encode(message, strip=strip)))
+    print(fmt.format("bin", mtalk.encode(message, encoding_type='binary', strip=strip)))
     print("")
+    print("{0:>8s}:".format("timing"))
     s = mtalk.encoding._encode_to_binary_string(message, on="=", off=".")
     N = len(s)
     print(_numbers_decades(N))
     print(_numbers_units(N))
     print("")
+    print(_timing_char(message))
     print(s)
-
+    print("")
+    print("{0:>8s}:".format("spoken reprentation"))
+    print(_spoken_representation(message))
     print("")
     print("code speed : %s wpm" % wpm)
     print("element_duration : %s" % element_duration)

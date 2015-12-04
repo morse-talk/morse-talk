@@ -62,6 +62,20 @@ morsetab = collections.OrderedDict([
     ('_', '..--.-')
 ])
 
+def _split_message(message):
+    """
+    >>> _split_message("SOS SOS")
+    [['S', 'O', 'S'], ['S', 'O', 'S']]
+
+    >>> _split_message(" SOS SOS")
+    [[], ['S', 'O', 'S'], ['S', 'O', 'S']]
+
+    >>> _split_message("  SOS SOS")
+    [[], [], ['S', 'O', 'S'], ['S', 'O', 'S']]
+    """
+    word_sep = " "
+    return list(map(list, message.split(word_sep)))
+
 def _encode_morse(message):
     """
     >>> message = "SOS"
