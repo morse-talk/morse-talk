@@ -48,8 +48,8 @@ python setup.py install
 
 # Decoding a binary pattern
 ```python
->>> bin = mtalk.encode('Alpha Ranger 45 knocked down', encoding_type='binary')
->>> mtalk.decode(bin, encoding_type='binary')
+>>> s_bin = mtalk.encode('Alpha Ranger 45 knocked down', encoding_type='binary')
+>>> mtalk.decode(s_bin, encoding_type='binary')
 'ALPHA RANGER 45 KNOCKED DOWN'
 ```
 
