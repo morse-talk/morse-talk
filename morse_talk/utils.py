@@ -223,8 +223,8 @@ def _char_to_string_binary(c, align=ALIGN.LEFT, padding='-'):
     >>> _char_to_string_binary('O', align=ALIGN.CENTER)
     '-----O-----'
     """
-    bin = mtalk.encode(c, encoding_type='binary', letter_sep=' ')
-    N = len(bin)
+    s_bin = mtalk.encode(c, encoding_type='binary', letter_sep=' ')
+    N = len(s_bin)
     if align == ALIGN.LEFT:
         s_align = "<"
     elif align == ALIGN.RIGHT:
@@ -343,8 +343,6 @@ def _spoken_representation(message):
              M   O   R   S  E          C    O   D  E
      (space) -- --- .-. ... . (space) -.-. --- -.. .
     """
-    inter_char = ' '
-    inter_word = inter_char * 9
     lst_lst_char = mtalk.encoding._split_message(message)
     s = _spoken_representation_L1(lst_lst_char)
     s += '\n' + _spoken_representation_L2(lst_lst_char)
