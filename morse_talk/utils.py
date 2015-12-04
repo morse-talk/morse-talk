@@ -283,8 +283,8 @@ def _char_to_string_morse(c, align=ALIGN.CENTER, padding=' '):
     >>> _char_to_string_morse('O')
     ' O '
     """
-    bin = mtalk.encode(c, encoding_type='default', letter_sep=' ')
-    N = len(bin)
+    s_bin = mtalk.encode(c, encoding_type='default', letter_sep=' ')
+    N = len(s_bin)
     if align == ALIGN.LEFT:
         s_align = "<"
     elif align == ALIGN.RIGHT:
