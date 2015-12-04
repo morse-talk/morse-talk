@@ -197,6 +197,7 @@ def _numbers_units(N):
 def _numbers_decades(N):
     """
     >>> _numbers_decades(45)
+    '         1         2         3         4'
     """
     N = N // 10
     lst = range(1, N + 1)
