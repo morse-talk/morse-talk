@@ -372,7 +372,7 @@ def display(message, wpm, element_duration, word_ref, strip=False):
     print(_spoken_representation(message))
     print("")
     print("code speed : %s wpm" % wpm)
-    print("element_duration : %s" % element_duration)
+    print("element_duration : %s s" % element_duration)
     print("reference word : %r" % word_ref)
     print("")
 
