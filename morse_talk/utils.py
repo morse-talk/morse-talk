@@ -18,6 +18,8 @@ FRAMERATE = 44100 / 4  # default framerate
 FREQUENCY = 750  # default sound frequency
 AMPLITUDE = 0.5
 
+from enum import Enum
+
 import morse_talk as mtalk
 from morse_talk.encoding import (_split_message, _encode_binary, _encode_to_binary_string)
 
@@ -204,7 +206,6 @@ def _numbers_decades(N):
     lst = range(1, N + 1)
     return "".join(map(lambda i: "%10s" % i, lst))
 
-from enum import Enum
 class ALIGN(Enum):
     """
     An Enum class for text alignement
