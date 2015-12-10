@@ -62,13 +62,46 @@ morsetab = collections.OrderedDict([
     ('_', '..--.-')
 ])
 
+def _split_message(message):
+    """
+    >>> _split_message("SOS SOS")
+    [['S', 'O', 'S'], ['S', 'O', 'S']]
+
+    >>> _split_message(" SOS SOS")
+    [[], ['S', 'O', 'S'], ['S', 'O', 'S']]
+
+    >>> _split_message("  SOS SOS")
+    [[], [], ['S', 'O', 'S'], ['S', 'O', 'S']]
+    """
+    word_sep = " "
+    return list(map(list, message.split(word_sep)))
+
 def _encode_morse(message):
     """
     >>> message = "SOS"
     >>> _encode_morse(message)
     ['...', '---', '...']
+
+    >>> _encode_morse(" " + message)
+    [' ', '...', '---', '...']
     """
     return [morsetab.get(c.upper(), '?') for c in message]
+
+def _encode_to_morse_string(message, letter_sep):
+    """
+    >>> message = "SOS"
+    >>> _encode_to_morse_string(message, letter_sep=' '*3)
+    '...   ---   ...'
+
+    >>> message = " SOS"
+    >>> _encode_to_morse_string(message, letter_sep=' '*3)
+    '     ...   ---   ...'
+    """
+    def to_string(i, s):
+        if i == 0 and s == ' ':
+            return '  '
+        return s
+    return letter_sep.join([to_string(i, s) for i, s in enumerate(_encode_morse(message))])
 
 def _encode_binary(message, on=1, off=0):
     """
@@ -86,6 +119,22 @@ def _encode_binary(message, on=1, off=0):
     l = map(lambda symb: [off] + bin_conv[symb], l)
     lst = [item for sublist in l for item in sublist] # flatten list
     return lst[1:]
+
+def _encode_to_binary_string(message, on, off):
+    """
+    >>> message = "SOS"
+    >>> _encode_to_binary_string(message, on='1', off='0')
+    '101010001110111011100010101'
+
+    >>> message = " SOS"
+    >>> _encode_to_binary_string(message, on='1', off='0')
+    '0000000101010001110111011100010101'
+    """
+    def to_string(i, s):
+        if i == 0 and s == off:
+            return off * 4
+        return s
+    return ''.join(to_string(i, s) for i, s in enumerate(_encode_binary(message, on=on, off=off)))
 
 def encode(message, encoding_type='default', letter_sep = ' '*3, strip=True):
     """Converts a string of message into morse
@@ -107,6 +156,10 @@ def encode(message, encoding_type='default', letter_sep = ' '*3, strip=True):
     >>> encode(message)
     '...   ---   ...'
 
+    >>> message = " SOS"
+    >>> encode(message, strip=False)
+    '     ...   ---   ...'
+
     Parameters
     ----------
     message : String
@@ -125,11 +178,9 @@ def encode(message, encoding_type='default', letter_sep = ' '*3, strip=True):
     allowed_encoding_type = ['default', 'binary']
 
     if encoding_type == 'default':
-        return letter_sep.join(_encode_morse(message))
-
+        return _encode_to_morse_string(message, letter_sep)
     elif encoding_type == 'binary':
-        return ''.join(_encode_binary(message, on='1', off='0'))
-
+        return _encode_to_binary_string(message, on='1', off='0')
     else:
         raise NotImplementedError("encoding_type must be in %s" % allowed_encoding_type)
 

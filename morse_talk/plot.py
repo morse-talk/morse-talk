@@ -10,7 +10,8 @@ All rights reserved.
 """
 
 import matplotlib.pyplot as plt
-import morse_talk as mtalk
+
+from morse_talk.encoding import _encode_binary
 
 def _create_ax(ax):
     """
@@ -55,7 +56,7 @@ def plot(message, duration=1, ax = None):
 
     Returns: ax a Matplotlib Axe
     """
-    lst_bin = mtalk.encoding._encode_binary(message)
+    lst_bin = _encode_binary(message)
     x, y = _create_x_y(lst_bin, duration)
     ax = _create_ax(ax)
     ax.plot(x, y, linewidth=2.0)
