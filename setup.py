@@ -24,7 +24,13 @@ setup(
         'morse_talk'
     ],
     install_requires=['sounddevice'],
-    scripts=['bin/mplot', 'bin/msound', 'bin/mtree'],
+    entry_points={
+        'console_scripts': [
+            'mplot=morse_talk.cli_mplot:main',
+            'msound=morse_talk.cli_msound:main',
+            'mtree=morse_talk.cli_mtree:main',
+        ],
+    },
     test_suite='nose.collector',
     tests_require=['nose>=0.10.1']
 
