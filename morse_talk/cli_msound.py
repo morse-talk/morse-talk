@@ -13,6 +13,7 @@ $ msound -m "MORSE CODE"
 """
 
 import argparse
+import sys
 
 from morse_talk.utils import (FRAMERATE, AMPLITUDE, FREQUENCY, WORD)
 from morse_talk.utils import (_get_speed, display, samples_nb)
@@ -60,7 +61,7 @@ def main():
         samples = compute_samples(channels, samp_nb)
 
         if args.filename == '-': # write to console
-            filename = stdout
+            filename = sys.stdout
             write_wavefile(filename, samples, samp_nb, args.channels, args.bits // 8, args.rate)
         else: # write the samples to a .wav file
             filename = args.filename
