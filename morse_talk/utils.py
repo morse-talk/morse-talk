@@ -162,7 +162,7 @@ def _seconds_per_dot(word_ref=WORD):
     >>> _seconds_per_dot('PARIS')
     1.2
     """
-    return 60 / mlength(word_ref)  # 1.2 with 'PARIS'
+    return 60.0 / mlength(word_ref)  # 1.2 with 'PARIS'
 
 
 def _get_speed(element_duration, wpm, word_ref=WORD):
