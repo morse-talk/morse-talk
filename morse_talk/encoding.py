@@ -7,9 +7,9 @@ Functions to encode strings
 #    All rights reserved.
 #    GNU GPL v2 license.
 
-__all__ = ['encode']
-
 import collections
+
+__all__ = ['encode']
 
 morsetab = collections.OrderedDict([
     ('A', '.-'),
@@ -62,6 +62,7 @@ morsetab = collections.OrderedDict([
     ('_', '..--.-')
 ])
 
+
 def _split_message(message):
     """
     >>> _split_message("SOS SOS")
@@ -76,6 +77,7 @@ def _split_message(message):
     word_sep = " "
     return list(map(list, message.split(word_sep)))
 
+
 def _encode_morse(message):
     """
     >>> message = "SOS"
@@ -86,6 +88,7 @@ def _encode_morse(message):
     [' ', '...', '---', '...']
     """
     return [morsetab.get(c.upper(), '?') for c in message]
+
 
 def _encode_to_morse_string(message, letter_sep):
     """
@@ -103,6 +106,7 @@ def _encode_to_morse_string(message, letter_sep):
         return s
     return letter_sep.join([to_string(i, s) for i, s in enumerate(_encode_morse(message))])
 
+
 def _encode_binary(message, on=1, off=0):
     """
     >>> message = "SOS"
@@ -115,10 +119,11 @@ def _encode_binary(message, on=1, off=0):
     l = _encode_morse(message)
     s = ' '.join(l)
     l = list(s)
-    bin_conv = { '.': [on], '-': [on]*3, ' ': [off]}
+    bin_conv = {'.': [on], '-': [on] * 3, ' ': [off]}
     l = map(lambda symb: [off] + bin_conv[symb], l)
-    lst = [item for sublist in l for item in sublist] # flatten list
+    lst = [item for sublist in l for item in sublist]  # flatten list
     return lst[1:]
+
 
 def _encode_to_binary_string(message, on, off):
     """
@@ -136,7 +141,8 @@ def _encode_to_binary_string(message, on, off):
         return s
     return ''.join(to_string(i, s) for i, s in enumerate(_encode_binary(message, on=on, off=off)))
 
-def encode(message, encoding_type='default', letter_sep = ' '*3, strip=True):
+
+def encode(message, encoding_type='default', letter_sep=' ' * 3, strip=True):
     """Converts a string of message into morse
 
     Two types of marks are there. One is short mark, dot(.) or "dit" and
@@ -184,9 +190,11 @@ def encode(message, encoding_type='default', letter_sep = ' '*3, strip=True):
     else:
         raise NotImplementedError("encoding_type must be in %s" % allowed_encoding_type)
 
+
 def main():
     import doctest
     doctest.testmod()
+
 
 if __name__ == '__main__':
     main()

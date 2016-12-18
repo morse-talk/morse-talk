@@ -16,10 +16,10 @@ import argparse
 
 import matplotlib.pyplot as plt
 
-import morse_talk as mtalk
 import morse_talk.plot as mplot
 from morse_talk.utils import WORD
 from morse_talk.utils import display, _get_speed
+
 
 def main():
     parser = argparse.ArgumentParser(prog="mplot", description='Plot morse code')
@@ -38,7 +38,7 @@ def main():
 
     display(message, wpm, element_duration, word_ref)
 
-    _ = mplot.plot(message, element_duration)
+    mplot.plot(message, element_duration)
     plt.show()
 
 if __name__ == '__main__':

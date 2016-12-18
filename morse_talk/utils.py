@@ -10,6 +10,11 @@ All rights reserved.
 
 """
 
+from enum import Enum
+
+import morse_talk as mtalk
+from morse_talk.encoding import (_split_message, _encode_binary, _encode_to_binary_string)
+
 WORD = 'PARIS'  # Reference word for code speed
 # http://www.kent-engineers.com/codespeed.htm
 
@@ -18,10 +23,6 @@ FRAMERATE = 44100 / 4  # default framerate
 FREQUENCY = 750  # default sound frequency
 AMPLITUDE = 0.5
 
-from enum import Enum
-
-import morse_talk as mtalk
-from morse_talk.encoding import (_split_message, _encode_binary, _encode_to_binary_string)
 
 def _repeat_word(word, N, word_space=" "):
     """
@@ -39,6 +40,7 @@ def _repeat_word(word, N, word_space=" "):
     message = message[len(word_space):]
     return message
 
+
 def mlength(message, N=1, word_spaced=True):
     """
     Returns Morse length
@@ -55,12 +57,13 @@ def mlength(message, N=1, word_spaced=True):
     lst_bin = _encode_binary(message)
     N = len(lst_bin)
     if word_spaced:
-        N -= 1 # E is one "dit" so we remove it
+        N -= 1  # E is one "dit" so we remove it
     return N
+
 
 def wpm_to_duration(wpm, output='timedelta', word_ref=WORD):
     """
-    Convert from WPM (word per minutes) to 
+    Convert from WPM (word per minutes) to
     element duration
 
     Parameters
@@ -109,9 +112,10 @@ def wpm_to_duration(wpm, output='timedelta', word_ref=WORD):
         raise NotImplementedError("output must be in %s" % allowed_output)
     return duration
 
+
 def duration(message, wpm, output='timedelta', word_ref=WORD, word_spaced=False):
     """
-    Calculate duration to send a message at a given code speed 
+    Calculate duration to send a message at a given code speed
     (calculated using reference word PARIS)
 
     Parameters
@@ -142,6 +146,7 @@ def duration(message, wpm, output='timedelta', word_ref=WORD, word_spaced=False)
     word_length = mlength(message, word_spaced=word_spaced)
     return word_length * elt_duration
 
+
 def samples_nb(message, wpm, framerate=FRAMERATE, word_spaced=False):
     """
     Calculate the number of samples for a given word at a given framerate (samples / seconds)
@@ -151,18 +156,20 @@ def samples_nb(message, wpm, framerate=FRAMERATE, word_spaced=False):
     """
     return int(duration(message, wpm, output='float', word_spaced=word_spaced) / 1000.0 * framerate)
 
+
 def _seconds_per_dot(word_ref=WORD):
     """
     >>> _seconds_per_dot('PARIS')
     1.2
     """
-    return 60 / mlength(word_ref) # 1.2 with 'PARIS'
+    return 60 / mlength(word_ref)  # 1.2 with 'PARIS'
+
 
 def _get_speed(element_duration, wpm, word_ref=WORD):
     """
     Returns
         element duration when element_duration and/or code speed is given
-        wpm    
+        wpm
 
     >>> _get_speed(0.2, None)
     (0.2, 5.999999999999999)
@@ -175,19 +182,20 @@ def _get_speed(element_duration, wpm, word_ref=WORD):
     """
     seconds_per_dot = _seconds_per_dot(word_ref)
     if element_duration is None and wpm is None:
-        #element_duration = 1
-        #wpm = seconds_per_dot / element_duration
+        # element_duration = 1
+        # wpm = seconds_per_dot / element_duration
         wpm = WPM
-        element_duration= wpm_to_duration(wpm, output='float', word_ref=WORD) / 1000.0
+        element_duration = wpm_to_duration(wpm, output='float', word_ref=WORD) / 1000.0
         return element_duration, wpm
     elif element_duration is not None and wpm is None:
         wpm = seconds_per_dot / element_duration
         return element_duration, wpm
     elif element_duration is None and wpm is not None:
-        element_duration= wpm_to_duration(wpm, output='float', word_ref=WORD) / 1000.0
+        element_duration = wpm_to_duration(wpm, output='float', word_ref=WORD) / 1000.0
         return element_duration, wpm
     else:
         raise NotImplementedError("Can't set both element_duration and wpm")
+
 
 def _numbers_units(N):
     """
@@ -196,6 +204,7 @@ def _numbers_units(N):
     """
     lst = range(1, N + 1)
     return "".join(list(map(lambda i: str(i % 10), lst)))
+
 
 def _numbers_decades(N):
     """
@@ -206,6 +215,7 @@ def _numbers_decades(N):
     lst = range(1, N + 1)
     return "".join(map(lambda i: "%10s" % i, lst))
 
+
 class ALIGN(Enum):
     """
     An Enum class for text alignement
@@ -213,6 +223,7 @@ class ALIGN(Enum):
     LEFT = 0
     CENTER = 1
     RIGHT = 2
+
 
 def _char_to_string_binary(c, align=ALIGN.LEFT, padding='-'):
     """
@@ -238,6 +249,7 @@ def _char_to_string_binary(c, align=ALIGN.LEFT, padding='-'):
     s = "{0:" + padding + s_align + str(N) + "}"
     return s.format(c)
 
+
 def _timing_representation(message):
     """
     Returns timing representation of a message like
@@ -260,6 +272,7 @@ def _timing_representation(message):
     s += '\n' + _timing_char(message)
     return s
 
+
 def _timing_char(message):
     """
     >>> message = 'MORSE CODE'
@@ -279,6 +292,7 @@ def _timing_char(message):
             s += _char_to_string_binary(c, align=ALIGN.LEFT)
     return s
 
+
 def _char_to_string_morse(c, align=ALIGN.CENTER, padding=' '):
     """
     >>> _char_to_string_morse('O')
@@ -296,6 +310,7 @@ def _char_to_string_morse(c, align=ALIGN.CENTER, padding=' '):
         raise NotImplementedError("align '%s' not allowed" % align)
     s = "{0:" + padding + s_align + str(N) + "}"
     return s.format(c)
+
 
 def _spoken_representation_L1(lst_lst_char):
     """
@@ -319,6 +334,7 @@ def _spoken_representation_L1(lst_lst_char):
             s += _char_to_string_morse(c)
     return s
 
+
 def _spoken_representation_L2(lst_lst_char):
     """
     >>> lst = [['M', 'O', 'R', 'S', 'E'], ['C', 'O', 'D', 'E']]
@@ -337,6 +353,7 @@ def _spoken_representation_L2(lst_lst_char):
             s += mtalk.encoding.morsetab[c]
     return s
 
+
 def _spoken_representation(message):
     """
     Returns 2 lines of spoken representation of a message
@@ -350,9 +367,10 @@ def _spoken_representation(message):
     s += '\n' + _spoken_representation_L2(lst_lst_char)
     return s
 
+
 def display(message, wpm, element_duration, word_ref, strip=False):
     """
-    Display 
+    Display
         text message
         morse code
         binary morse code
@@ -377,10 +395,11 @@ def display(message, wpm, element_duration, word_ref, strip=False):
     print("reference word : %r" % word_ref)
     print("")
 
+
 def _limit_value(value, upper=1.0, lower=0.0):
     """
     Returs value (such as amplitude) to upper and lower value
-    
+
     >>> _limit_value(0.5)
     0.5
 
@@ -390,15 +409,19 @@ def _limit_value(value, upper=1.0, lower=0.0):
     >>> _limit_value(-1.5)
     0.0
     """
-    if value > upper: return(upper)
-    if value < lower: return(lower)
+    if value > upper:
+        return(upper)
+    if value < lower:
+        return(lower)
     return value
 
 SECONDS_PER_DOT = _seconds_per_dot(WORD)  # 1.2
 
+
 def main():
     import doctest
     doctest.testmod()
+
 
 if __name__ == '__main__':
     main()
