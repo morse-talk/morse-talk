@@ -28,7 +28,6 @@ install:
  - pip install .
 
 script:
-  - cd `mktemp -d`
   - nosetests --verbosity=2 --with-doctest
   - flake8 --version
   - flake8 --ignore E501 morse_talk
