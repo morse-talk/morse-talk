@@ -26,5 +26,6 @@ def main():
     mt = MorseBinaryTree()
     print(mt[c])
 
+
 if __name__ == '__main__':
     main()

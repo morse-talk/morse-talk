@@ -41,5 +41,6 @@ def main():
     mplot.plot(message, element_duration)
     plt.show()
 
+
 if __name__ == '__main__':
     main()

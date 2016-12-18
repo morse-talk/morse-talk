@@ -69,5 +69,6 @@ def main():
 
         write_wavefile(filename, samples, samp_nb, args.channels, args.bits // 8, args.rate)
 
+
 if __name__ == "__main__":
     main()
