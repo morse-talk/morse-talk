@@ -1,5 +1,5 @@
-from .encoding import *
-from .decoding import *
+from .encoding import *  # noqa
+from .decoding import *  # noqa
 
 # Release data
 from morse_talk import release

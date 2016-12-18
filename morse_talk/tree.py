@@ -32,6 +32,7 @@ print(mt['...'])
 
 import morse_talk as mtalk
 
+
 class MorseBinaryTree(object):
     """
     Morse binary tree
@@ -65,13 +66,13 @@ class MorseBinaryTree(object):
 
     def __str__(self):
         return self._pretty_pprint()
-        #return self._pretty_custom(self._tree)
+        # return self._pretty_custom(self._tree)
 
     def _pretty_pprint(self):
         import pprint
         return pprint.pformat(self._tree)
-    
-    def _pretty_custom(self, d, indent_nb = 0, indent_char = '  '):
+
+    def _pretty_custom(self, d, indent_nb=0, indent_char='  '):
         s = ''
         for key, value in d.items():
             if key != self._char:
@@ -79,9 +80,9 @@ class MorseBinaryTree(object):
             if isinstance(value, dict):
                 s += self._pretty_custom(value, indent_nb + 1)
             else:
-                #s += ((indent_char * (indent_nb + 1) + str(value))) + '\n'
+                # s += ((indent_char * (indent_nb + 1) + str(value))) + '\n'
                 s += "%20s\n" % value
-            #s += '\n'
+            # s += '\n'
         return s
 
     @property
@@ -109,9 +110,11 @@ class MorseBinaryTree(object):
             mt = MorseBinaryTree(tree=tree)[morse_code[1:]]
             return mt
 
+
 def main():
     import doctest
     doctest.testmod()
+
 
 if __name__ == '__main__':
     main()

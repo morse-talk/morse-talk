@@ -19,8 +19,9 @@ from morse_talk.utils import (FRAMERATE, AMPLITUDE, FREQUENCY, WORD)
 from morse_talk.utils import (_get_speed, display, samples_nb)
 
 from morse_talk.sound import (BITS, CHANNELS)
-from morse_talk.sound import (preview_wave,
-                    compute_samples, generate_wave, write_wavefile)
+from morse_talk.sound import (preview_wave, compute_samples,
+                              generate_wave, write_wavefile)
+
 
 def main():
     parser = argparse.ArgumentParser(prog="msound", description='Create or listen morse code sound')
@@ -48,7 +49,7 @@ def main():
 
     display(message, wpm, element_duration, word_ref)
 
-    if args.filename == '': # preview
+    if args.filename == '':  # preview
         preview_wave(message, wpm, args.frequency, framerate, amplitude, word_ref)
         while(args.loop):
             message_with_space = " " + message
@@ -60,13 +61,14 @@ def main():
         samp_nb = samples_nb(message=message, wpm=wpm, framerate=framerate, word_spaced=False)
         samples = compute_samples(channels, samp_nb)
 
-        if args.filename == '-': # write to console
+        if args.filename == '-':  # write to console
             filename = sys.stdout
             write_wavefile(filename, samples, samp_nb, args.channels, args.bits // 8, args.rate)
-        else: # write the samples to a .wav file
+        else:  # write the samples to a .wav file
             filename = args.filename
 
         write_wavefile(filename, samples, samp_nb, args.channels, args.bits // 8, args.rate)
+
 
 if __name__ == "__main__":
     main()

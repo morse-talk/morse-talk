@@ -31,10 +31,12 @@ try:
 except AttributeError:
     stdout = sys.stdout
 
+
 def grouper(n, iterable, fillvalue=None):
     "grouper(3, 'ABCDEFG', 'x') --> ABC DEF Gxx"
     args = [iter(iterable)] * n
     return zip_longest(fillvalue=fillvalue, *args)
+
 
 def compute_samples(channels, nsamples=None):
     '''
@@ -43,6 +45,7 @@ def compute_samples(channels, nsamples=None):
     at each sample in the file for each channel.
     '''
     return islice(izip(*(imap(sum, izip(*channel)) for channel in channels)), nsamples)
+
 
 def write_wavefile(f, samples, nframes=None, nchannels=2, sampwidth=2, framerate=44100, bufsize=2048):
     "Write samples to a wavefile."
@@ -58,8 +61,9 @@ def write_wavefile(f, samples, nframes=None, nchannels=2, sampwidth=2, framerate
     for chunk in grouper(bufsize, samples):
         frames = b''.join(b''.join(struct.pack('h', int(max_amplitude * sample)) for sample in channels) for channels in chunk if channels is not None)
         w.writeframesraw(frames)
-    
+
     w.close()
+
 
 def sine_wave(i, frequency=FREQUENCY, framerate=FRAMERATE, amplitude=AMPLITUDE):
     """
@@ -89,13 +93,16 @@ def generate_wave(message, wpm=WPM, framerate=FRAMERATE, skip_frame=0, amplitude
 
     """
     lst_bin = _encode_binary(message)
-    if amplitude > 1.0: amplitude = 1.0
-    if amplitude < 0.0: amplitude = 0.0
-    seconds_per_dot = _seconds_per_dot(word_ref) # =1.2
+    if amplitude > 1.0:
+        amplitude = 1.0
+    if amplitude < 0.0:
+        amplitude = 0.0
+    seconds_per_dot = _seconds_per_dot(word_ref)  # =1.2
     for i in count(skip_frame):
         bit = morse_bin(i=i, lst_bin=lst_bin, wpm=wpm, framerate=framerate, default_value=0.0, seconds_per_dot=seconds_per_dot)
         sine = sine_wave(i=i, frequency=frequency, framerate=framerate, amplitude=amplitude)
         yield sine * bit
+
 
 def morse_bin(i, lst_bin, wpm=WPM, framerate=FRAMERATE, default_value=0.0, seconds_per_dot=1.2):
     """
@@ -105,16 +112,18 @@ def morse_bin(i, lst_bin, wpm=WPM, framerate=FRAMERATE, default_value=0.0, secon
     try:
         return lst_bin[int(float(wpm) * float(i) / (seconds_per_dot * float(framerate)))]
     except IndexError:
-        return default_value   
+        return default_value
+
 
 def calculate_wave(i, lst_bin, wpm=WPM, frequency=FREQUENCY, framerate=FRAMERATE, amplitude=AMPLITUDE, seconds_per_dot=SECONDS_PER_DOT):
     """
     Returns product of a sin wave and morse code (dit, dah, silent)
     """
-    bit = morse_bin(i=i, lst_bin=lst_bin, wpm=wpm, framerate=framerate, 
-            default_value=0.0, seconds_per_dot=seconds_per_dot)
+    bit = morse_bin(i=i, lst_bin=lst_bin, wpm=wpm, framerate=framerate,
+                    default_value=0.0, seconds_per_dot=seconds_per_dot)
     sine = sine_wave(i=i, frequency=frequency, framerate=framerate, amplitude=amplitude)
     return bit * sine
+
 
 def preview_wave(message, wpm=WPM, frequency=FREQUENCY, framerate=FRAMERATE, amplitude=AMPLITUDE, word_ref=WORD):
     """
@@ -129,12 +138,14 @@ def preview_wave(message, wpm=WPM, frequency=FREQUENCY, framerate=FRAMERATE, amp
     amplitude = _limit_value(amplitude)
     seconds_per_dot = _seconds_per_dot(word_ref)  # 1.2
     a = [calculate_wave(i, lst_bin, wpm, frequency, framerate, amplitude, seconds_per_dot)
-        for i in range(samp_nb)]
+         for i in range(samp_nb)]
     sd.play(a, framerate, blocking=True)
+
 
 def main():
     import doctest
     doctest.testmod()
+
 
 if __name__ == '__main__':
     main()
