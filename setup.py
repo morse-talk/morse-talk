@@ -23,7 +23,7 @@ setup(
     packages=[
         'morse_talk'
     ],
-    install_requires=['sounddevice'],
+    install_requires=['sounddevice', 'matplotlib'],
     entry_points={
         'console_scripts': [
             'mplot=morse_talk.cli_mplot:main',
