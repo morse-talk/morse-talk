@@ -133,7 +133,7 @@ def decode():
             r+=morse[z]
             z=''
     print('\n')
-    var = messagebox.showinfo("DECODE TEXT" ,"the text is :"+'\n'+r)
+    var = messagebox.showinfo("DECODED TEXT" ,"the text is :"+'\n'+r)
     
 
 master = Tk()
