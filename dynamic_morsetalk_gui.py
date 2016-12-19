@@ -1,4 +1,5 @@
 from tkinter import *
+import time
 morse = {
 "A" : ".-",
 "B" : "-...", 
@@ -104,50 +105,75 @@ morse = {
  "--..--":",",
 " ":"  ",
 "":" "
+
+
 }
 
+
+
+
 def encode():
+  global dc
   x=e1.get()
-  print("the code is :"+'\n')
   q=''
   for i in x:
-    print(morse[i],end=" ")
     q+=morse[i]
     q+=' '
+
+  if q!=dc:
+      dc=q
+      c.config(text=q)
+
+  c.after(500,encode)  
     
-  print('\n')
-  var = messagebox.showinfo("ENCODED TEXT" ,"the code is :"+'\n'+q)
+  
 
 
 def decode():
-    y=e2.get()
-    y+=' '
-    print("the text is :"+'\n')
+    global cd
+    global y
+    if e2.get()=='':
+        y="a"
+    else:    
+        y=e2.get()
     z=''
     r=""
-    for j in y:
-        if j!=" ":
-            z+=j
-        else:
-            print(morse[z],end="")
-            r+=morse[z]
-            z=''
-    print('\n')
-    var = messagebox.showinfo("DECODED TEXT" ,"the text is :"+'\n'+r)
     
-
+    if y[-1]==' ':
+      for j in y:
+          if j!=" ":
+              z+=j
+          else:
+              r+=morse[z]
+              z=''
+      if r!=cd:
+          cd=r
+          d.config(text=r)
+        
+    d.after(500,decode)
+        
+    
+dc=''
+cd=''
+y="a"
 master = Tk()
-Label(master, text="Encode").grid(row=2)
-Label(master, text="Decode").grid(row=5)
+Label(master, text="Encode",font=('times', 15,'bold'),fg='red').grid(row=2)
+Label(master, text="Decode",font=('times', 15,'bold'),fg='blue').grid(row=8)
+Label(master, text="Encoded text",font=('times', 15,'bold'),fg='red').grid(row=5)
+Label(master, text="Decoded code",font=('times', 15,'bold'),fg='blue').grid(row=11)
+c=Label(master, font=('times', 20, 'bold'),fg='green')
+d=Label(master, font=('times', 20, 'bold'),fg='green')
+
 
 e1 = Entry(master)
 e2 = Entry(master)
 
 e1.grid(row=2, column=1)
-e2.grid(row=5, column=1)
+e2.grid(row=8, column=1)
+c.grid(row=5,column=1)
+d.grid(row=11,column=1)
 
-Button(master, text='                 Quit                 ', command=master.destroy).grid(row=9, column=1, sticky=W, pady=5)
-Button(master, text='         Encode         ', command=encode).grid(row=7, column=0, sticky=W, pady=4)
-Button(master, text='         Decode         ', command=decode).grid(row=7, column=2, sticky=W, pady=4)
+encode()
+decode()
 
 mainloop( )
