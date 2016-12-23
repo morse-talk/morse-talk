@@ -46,10 +46,10 @@ def gui():
     Label(master, text="Encoded text", font=('Courier', 25, 'bold')).grid(row=6)
     Label(master, text="Decoded code", font=('Courier', 25, 'bold')).grid(row=14)
 
-    e1 = Entry(master, font=('arial', 20, 'bold'))
-    e2 = Entry(master, font=('arial', 20, 'bold'))
-    e3 = Entry(master, font=('arial', 20, 'bold'))
-    e4 = Entry(master, font=('arial', 20, 'bold'))
+    e1 = Entry(master, font=('Courier', 20, 'bold'))
+    e2 = Entry(master, font=('Courier', 20, 'bold'))
+    e3 = Entry(master, font=('Courier', 20, 'bold'))
+    e4 = Entry(master, font=('Courier', 20, 'bold'))
 
     e1.grid(row=3, column=1)
     e2.grid(row=11, column=1)
