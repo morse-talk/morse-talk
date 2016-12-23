@@ -38,20 +38,20 @@ def gui():
     dc = ''
     cd = ''
     y = "a"
-    v='Courier', 20, 'bold'
-    u='Courier', 25, 'bold'
+    font1='Courier', 25, 'bold'
+    font2='Courier', 20, 'bold'
     master = Tk()
     master.title("morse_talk")
 
-    Label(master, text="Encode", font=u).grid(row=3)
-    Label(master, text="Decode", font=u).grid(row=11)
-    Label(master, text="Encoded text", font=u).grid(row=6)
-    Label(master, text="Decoded code", font=u).grid(row=14)
+    Label(master, text="Encode", font=font1).grid(row=3)
+    Label(master, text="Decode", font=font1).grid(row=11)
+    Label(master, text="Encoded text", font=font1).grid(row=6)
+    Label(master, text="Decoded code", font=font1).grid(row=14)
 
-    e1 = Entry(master, font=v)
-    e2 = Entry(master, font=v)
-    e3 = Entry(master, font=v)
-    e4 = Entry(master, font=v)
+    e1 = Entry(master, font=font2)
+    e2 = Entry(master, font=font2)
+    e3 = Entry(master, font=font2)
+    e4 = Entry(master, font=font2)
 
     e1.grid(row=3, column=1)
     e2.grid(row=11, column=1)
