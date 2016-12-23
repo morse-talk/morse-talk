@@ -38,8 +38,8 @@ def gui():
     dc = ''
     cd = ''
     y = "a"
-    font1='Courier', 25, 'bold'
-    font2='Courier', 20, 'bold'
+    font1 = 'Courier', 25, 'bold'
+    font2 = 'Courier', 20, 'bold'
     master = Tk()
     master.title("morse_talk")
 
