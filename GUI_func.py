@@ -61,5 +61,10 @@ def gui():
     mainloop()
 
 
-if __name__ == "__main__":
-    gui()
+def main():
+    import doctest
+    doctest.testmod()
+
+
+if __name__ == '__main__':
+    main()
