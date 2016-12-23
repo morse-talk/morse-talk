@@ -64,6 +64,7 @@ def gui():
 def main():
     import doctest
     doctest.testmod()
+    gui()
 
 
 if __name__ == '__main__':
