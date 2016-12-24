@@ -1,3 +1,8 @@
+"""
+Function to produce a G.U.I. 
+"""
+#developed by Arindam Biswas(github handle @aribis369)
+
 from tkinter import *
 import time
 import morse_talk as mtalk
@@ -5,7 +10,7 @@ import sys
 
 dc = ''
 cd = ''
-
+y = 'a'
 
 def gui():
     def encode():
@@ -26,7 +31,7 @@ def gui():
         else:
             y = e2.get()
         z = ''
-        r = ""
+        r = ''
         if y[-1] == ' ':
             r = mtalk.decode(y)
             if r != cd:
@@ -35,9 +40,6 @@ def gui():
                 e4.insert(0, r)
         e4.after(500, decode)
 
-    dc = ''
-    cd = ''
-    y = "a"
     font1 = 'Courier', 25, 'bold'
     font2 = 'Courier', 20, 'bold'
     master = Tk()
