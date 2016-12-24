@@ -23,12 +23,13 @@ setup(
     packages=[
         'morse_talk'
     ],
-    install_requires=['sounddevice'],
+    install_requires=['sounddevice', 'matplotlib'],
     entry_points={
         'console_scripts': [
             'mplot=morse_talk.cli_mplot:main',
             'msound=morse_talk.cli_msound:main',
             'mtree=morse_talk.cli_mtree:main',
+            'mgui=morse_talk.gui_func:main'
         ],
     },
     test_suite='nose.collector',

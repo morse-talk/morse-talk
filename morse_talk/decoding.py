@@ -13,6 +13,7 @@ __all__ = ['decode']
 
 binary_lookup = {encoding.encode(key, encoding_type='binary'): key for key, value in encoding.morsetab.items()}
 
+
 def decode(code, encoding_type='default'):
     """Converts a string of morse code into English message
 
@@ -37,12 +38,12 @@ def decode(code, encoding_type='default'):
         index = {}
 
         for i in range(len(code)):
-            if code[i: i+3] == ' '*3:
-                if code[i: i+7] == ' '*7:
+            if code[i:i + 3] == ' ' * 3:
+                if code[i:i + 7] == ' ' * 7:
                     words += 1
                     letters += 1
                     index[words] = letters
-                elif code[i+4] and code[i-1] != ' ':  # Check for '   '
+                elif code[i + 4] and code[i - 1] != ' ':  # Check for '   '
                     letters += 1
 
         message = [reversed_morsetab[i] for i in code.split()]
@@ -51,7 +52,7 @@ def decode(code, encoding_type='default'):
         return ''.join(message)
 
     elif encoding_type == 'binary':
-        lst = list(map(lambda word: word.split('0'*3), code.split('0'*7)))
+        lst = list(map(lambda word: word.split('0' * 3), code.split('0' * 7)))
         # list of list of character (each sub list being a word)
         for i, word in enumerate(lst):
             for j, bin_letter in enumerate(word):

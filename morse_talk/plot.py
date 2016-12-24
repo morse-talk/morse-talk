@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 
 from morse_talk.encoding import _encode_binary
 
+
 def _create_ax(ax):
     """
     Create a Matplotlib Axe from ax
@@ -25,6 +26,7 @@ def _create_ax(ax):
         return axs
     else:
         return ax
+
 
 def _create_x_y(l, duration=1):
     """
@@ -50,7 +52,8 @@ def _create_x_y(l, duration=1):
         x.append(i * duration)
     return x, y
 
-def plot(message, duration=1, ax = None):
+
+def plot(message, duration=1, ax=None):
     """
     Plot a message
 
@@ -67,9 +70,11 @@ def plot(message, duration=1, ax = None):
     ax.set_xlim(-delta_x, len(lst_bin) * duration + delta_x)
     return ax
 
+
 def main():
     import doctest
     doctest.testmod()
+
 
 if __name__ == '__main__':
     main()
