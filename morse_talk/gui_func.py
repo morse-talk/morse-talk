@@ -3,7 +3,7 @@ Function to produce a G.U.I.
 """
 # developed by Arindam Biswas(github handle @aribis369)
 
-from tkinter import *
+from tkinter import Label, Entry, Tk, END, mainloop
 import time
 import morse_talk as mtalk
 import sys
@@ -42,7 +42,7 @@ def gui():
         e4.after(500, decode)
 
     font1 = 'Courier', 25, 'bold'
-    font2 = 'Courier', 20, 'bold'
+    font2 = 'Courier', 15, 'bold'
     master = Tk()
     master.title("morse_talk")
 
@@ -56,10 +56,10 @@ def gui():
     e3 = Entry(master, font=font2)
     e4 = Entry(master, font=font2)
 
-    e1.grid(row=3, column=1)
-    e2.grid(row=11, column=1)
-    e3.grid(row=6, column=1)
-    e4.grid(row=14, column=1)
+    e1.grid(row=3, column=1, ipadx=35)
+    e2.grid(row=11, column=1, ipadx=35)
+    e3.grid(row=6, column=1, ipadx=35)
+    e4.grid(row=14, column=1, ipadx=35)
 
     encode()
     decode()
