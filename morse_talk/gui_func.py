@@ -1,7 +1,7 @@
 """
-Function to produce a G.U.I. 
+Function to produce a G.U.I.
 """
-#developed by Arindam Biswas(github handle @aribis369)
+# developed by Arindam Biswas(github handle @aribis369)
 
 from tkinter import *
 import time
@@ -11,6 +11,7 @@ import sys
 dc = ''
 cd = ''
 y = 'a'
+
 
 def gui():
     def encode():
