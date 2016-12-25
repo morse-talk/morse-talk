@@ -4,9 +4,7 @@ Function to produce a G.U.I.
 # developed by Arindam Biswas(github handle @aribis369)
 
 from tkinter import Label, Entry, Tk, END, mainloop
-import time
 import morse_talk as mtalk
-import sys
 
 dc = ''
 cd = ''
@@ -31,7 +29,6 @@ def gui():
             y = "a"
         else:
             y = e2.get()
-        z = ''
         r = ''
         if y[-1] == ' ':
             r = mtalk.decode(y)
