@@ -3,7 +3,10 @@ Function to produce a G.U.I.
 """
 # developed by Arindam Biswas(github handle @aribis369)
 
-from tkinter import Label, Entry, Tk, END, mainloop
+try:
+    from Tkinter import Label, Entry, Tk, END, mainloop
+except ImportError:
+    from tkinter import Label, Entry, Tk, END, mainloop
 import morse_talk as mtalk
 
 dc = ''
