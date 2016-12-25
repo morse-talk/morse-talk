@@ -74,3 +74,14 @@ International Morse code is composed of five elements:
 * medium gap (between words) : seven time units long
 
 ![Morse Code graph](files/images/code_graph.png "A graphical representation of the dichotomic search table: the user branches left at every dot and right at every dash until the character is finished.")
+
+
+# Graphical User Interface
+  **GUI function** provides a graphical user interface to the user.
+## Features
+* The GUI provides entry fields for input and the corresponding output is presented
+  is given dynamically in the output fields.
+* The output in the output fields can be copied from there and can be used at other places.
+
+
+![GUI window](morse_gui.png)
