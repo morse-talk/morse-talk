@@ -2,7 +2,6 @@ import morse_talk as mtalk
 
 
 def mutual():
-    flag = 0
     print('\n')
     x = input("input>>> ")
     if x == 'quit':
